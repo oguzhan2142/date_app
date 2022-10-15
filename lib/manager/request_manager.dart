@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/enums/request_type.dart';
 import 'package:frontend/manager/interceptor/token_interceptor.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class RequestManager {
   late final Dio _dio;
   RequestManager(String baseUrl) {
     _dio = Dio(BaseOptions(baseUrl: baseUrl));
-    _dio.interceptors.add(PrettyDioLogger());
+    // _dio.interceptors.add(PrettyDioLogger());
     _dio.interceptors.add(TokenInterceptor());
   }
 
@@ -22,7 +21,17 @@ class RequestManager {
       Response? response;
       switch (requestType) {
         case RequestType.GET:
-          response = await _dio.get(path, queryParameters: queryParameters);
+          response = await _dio.get(
+            path,
+            queryParameters: queryParameters,
+          );
+          break;
+        case RequestType.POST:
+          response = await _dio.post(
+            path,
+            queryParameters: queryParameters,
+            data: body,
+          );
           break;
         default:
       }
