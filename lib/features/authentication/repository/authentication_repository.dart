@@ -1,10 +1,10 @@
 import 'package:frontend/enums/request_type.dart';
 import 'package:frontend/features/authentication/model/login_input.dart';
 import 'package:frontend/model/auth.dart';
-import 'package:frontend/repository/base_repository.dart';
-import 'package:frontend/repository/i_authentication_repository.dart';
+import 'package:frontend/base/base_repository.dart';
 
-import '../features/authentication/model/auth_input.dart';
+import '../model/auth_input.dart';
+import 'i_authentication_repository.dart';
 
 class AuthenticationRepository extends BaseRepository implements IAuthenticationRepository {
   AuthenticationRepository({required super.requestManager});
