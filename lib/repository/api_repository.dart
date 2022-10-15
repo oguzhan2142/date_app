@@ -7,11 +7,11 @@ class ApiRepository extends BaseRepository implements IApiRepository {
   ApiRepository({required super.requestManager});
 
   @override
-  Future<MatchUser?> getNextMatchUser() {
+  Future<MatchUser?> getNextMatchUser({required String userId}) {
     return requestManager.getSingle(
-      path: '/api/match',
+      path: '/api/match/next',
       requestType: RequestType.GET,
-      queryParameters: {'userId': "6344293f3816d40cf6120609"},
+      queryParameters: {'userId': userId},
       converter: (json) => MatchUser.fromJson(json),
     );
   }

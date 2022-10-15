@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/model/auth.dart';
 
 import 'package:frontend/providers/repository_providers.dart';
 
@@ -22,7 +23,7 @@ class MatchUserNotifier extends ChangeNotifier {
   });
 
   void nextMatch() async {
-    var nextUser = await apiRepository.getNextMatchUser();
+    var nextUser = await apiRepository.getNextMatchUser(userId: Auth.instance.user.id);
 
     matchUser = nextUser;
     print('notified');

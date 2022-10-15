@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/base/view_model.dart';
 import 'package:frontend/features/authentication/provider/register_provider.dart';
 import 'package:frontend/features/authentication/provider/repository_provider.dart';
-import 'package:frontend/model/auth_input.dart';
 
 import '../../../model/auth.dart';
+import '../model/auth_input.dart';
 
 class RegisterViewModel extends ViewModel {
   final usernameController = TextEditingController();

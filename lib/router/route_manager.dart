@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/features/authentication/view/login_view.dart';
 import 'package:frontend/features/authentication/view/register_view.dart';
 import 'package:frontend/features/match/view/match_view.dart';
 import 'package:frontend/features/onboarding/view/splash_view.dart';
@@ -9,7 +10,7 @@ class RouteManager {
   RouteManager._();
 
   final GoRouter router = GoRouter(
-    initialLocation: '/register',
+    initialLocation: '/login',
     routes: <GoRoute>[
       GoRoute(
         path: '/',
@@ -22,6 +23,12 @@ class RouteManager {
         path: '/register',
         builder: (BuildContext context, GoRouterState state) {
           return const RegisterView();
+        },
+      ),
+      GoRoute(
+        path: '/login',
+        builder: (BuildContext context, GoRouterState state) {
+          return const LoginView();
         },
       ),
       GoRoute(
