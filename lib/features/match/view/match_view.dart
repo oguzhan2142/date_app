@@ -22,7 +22,14 @@ class _MatchViewState extends ConsumerState<MatchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: viewModel.signOut,
+            icon: const Icon(Icons.logout_outlined),
+          ),
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -42,7 +49,7 @@ class _MatchViewState extends ConsumerState<MatchView> {
               CircleAvatar(
                 radius: 28,
                 child: IconButton(
-                  onPressed: () => viewModel.onSwipeLeft,
+                  onPressed: viewModel.onSwipeLeft,
                   icon: const Icon(
                     Icons.close,
                     size: 30,
@@ -52,7 +59,7 @@ class _MatchViewState extends ConsumerState<MatchView> {
               CircleAvatar(
                 radius: 28,
                 child: IconButton(
-                  onPressed: () => viewModel.onSwipeRight,
+                  onPressed: viewModel.onSwipeRight,
                   icon: const Icon(
                     Icons.favorite,
                     size: 30,

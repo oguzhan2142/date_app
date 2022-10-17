@@ -1,4 +1,4 @@
-import 'package:frontend/manager/request_manager.dart';
+import 'package:frontend/manager/request_manager/request_manager.dart';
 
 abstract class BaseRepository {
   final RequestManager requestManager;

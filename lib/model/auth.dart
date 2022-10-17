@@ -4,7 +4,7 @@ part 'auth.g.dart';
 
 @JsonSerializable()
 class Auth {
-  static late Auth _instance;
+  static Auth? instance;
 
   final User user;
   final String token;
@@ -14,9 +14,7 @@ class Auth {
     required this.token,
   });
 
-  static Auth get instance => _instance;
-
-  static set instance(Auth auth) => _instance = auth;
+  static bool get isNull => instance == null;
 
   Map<String, dynamic> toJson() => _$AuthToJson(this);
 

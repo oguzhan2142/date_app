@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/enums/request_type.dart';
-import 'package:frontend/manager/interceptor/token_interceptor.dart';
+import 'package:frontend/manager/request_manager/interceptor/token_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class RequestManager {
