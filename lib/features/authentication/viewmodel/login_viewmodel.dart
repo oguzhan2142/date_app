@@ -5,7 +5,7 @@ import 'package:frontend/features/authentication/provider/login_provider.dart';
 import 'package:frontend/features/authentication/provider/repository_provider.dart';
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';
-import 'package:go_router/go_router.dart';
+import 'package:frontend/router/routes.dart';
 
 import '../../../model/auth.dart';
 
@@ -29,7 +29,7 @@ class LoginViewModel extends ViewModel {
           CacheTag.AUTH,
           Auth.instance!.toJson(),
         );
-        GoRouter.of(context).replaceNamed('/match');
+        Navigator.of(context).pushReplacementNamed(Routes.NAVIGATION);
 
         print('logged in');
       } else {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/features/authentication/provider/login_provider.dart';
 import 'package:frontend/features/authentication/viewmodel/login_viewmodel.dart';
-import 'package:go_router/go_router.dart';
+import 'package:frontend/router/routes.dart';
 
 import '../../../enums/padding_type.dart';
 
@@ -49,7 +49,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             ),
             TextButton(
               onPressed: () {
-                GoRouter.of(context).push('/register');
+                Navigator.of(context).pushReplacementNamed(Routes.REGISTER);
               },
               child: const Text('register'),
             ),

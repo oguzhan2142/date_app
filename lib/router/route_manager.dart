@@ -2,47 +2,33 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:frontend/features/authentication/view/login_view.dart';
 import 'package:frontend/features/authentication/view/register_view.dart';
-import 'package:frontend/features/match/view/match_view.dart';
 import 'package:frontend/features/onboarding/view/splash_view.dart';
+import 'package:frontend/features/profile/view/settings_view.dart';
 import 'package:frontend/model/auth.dart';
-import 'package:go_router/go_router.dart';
+import 'package:frontend/router/routes.dart';
+
+import '../features/navigation_bar/view/navigation_view.dart';
 
 class RouteManager {
   RouteManager._();
-  void init(String initialLocation) {
-    router = GoRouter(
-      initialLocation: initialLocation,
-      routes: <GoRoute>[
-        GoRoute(
-          path: '/',
-          name: '/',
-          builder: (BuildContext context, GoRouterState state) {
-            return const SplashView();
-          },
-        ),
-        GoRoute(
-          path: '/register',
-          builder: (BuildContext context, GoRouterState state) {
-            return const RegisterView();
-          },
-        ),
-        GoRoute(
-          path: '/login',
-          builder: (BuildContext context, GoRouterState state) {
-            return const LoginView();
-          },
-        ),
-        GoRoute(
-          path: '/match',
-          name: '/match',
-          redirect: _redirect,
-          builder: (BuildContext context, GoRouterState state) {
-            return const MatchView();
-          },
-        ),
-      ],
-    );
+
+  final Map<String, Widget Function(BuildContext)> routes = {
+    Routes.SETTINGS: (context) => const SettingsView(),
+    Routes.LOGIN: (context) => const LoginView(),
+    Routes.REGISTER: (context) => const RegisterView(),
+    Routes.SPLASH: (context) => const SplashView(),
+    Routes.NAVIGATION: (context) => const NavigationView(),
+  };
+
+  Widget getHome() {
+    if (initialLocation == Routes.NAVIGATION) {
+      return const NavigationView();
+    }
+
+    return const LoginView();
   }
+
+  late final String initialLocation;
 
   FutureOr<String?> _redirect(context, state) {
     if (Auth.isNull) {
@@ -52,6 +38,4 @@ class RouteManager {
   }
 
   static final RouteManager instance = RouteManager._();
-
-  late final GoRouter router;
 }

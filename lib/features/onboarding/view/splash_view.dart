@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -15,9 +14,7 @@ class _SplashViewState extends State<SplashView> {
       appBar: AppBar(),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            context.replaceNamed('/match');
-          },
+          onPressed: () {},
           child: const Text('match'),
         ),
       ),

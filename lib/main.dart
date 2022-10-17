@@ -6,6 +6,7 @@ import 'package:frontend/router/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/auth.dart';
+import 'router/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,10 +18,12 @@ void main() async {
     var auth = Auth.fromJson(authJson);
 
     Auth.instance = auth;
-    RouteManager.instance.init('/match');
+    RouteManager.instance.initialLocation = Routes.NAVIGATION;
   } else {
-    RouteManager.instance.init('/login');
+    RouteManager.instance.initialLocation = Routes.LOGIN;
   }
+
+  print(RouteManager.instance.initialLocation);
 
   runApp(const MyApp());
 }
@@ -31,9 +34,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      child: MaterialApp.router(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        routerConfig: RouteManager.instance.router,
+        initialRoute: RouteManager.instance.initialLocation,
+        routes: RouteManager.instance.routes,
+        // home: RouteManager.instance.getHome(),
         title: 'Material App',
       ),
     );

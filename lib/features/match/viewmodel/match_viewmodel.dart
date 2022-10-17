@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:frontend/base/view_model.dart';
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';
 import 'package:frontend/model/auth.dart';
-import 'package:go_router/go_router.dart';
 
+import '../../../router/routes.dart';
 import '../model/match_user.dart';
 import '../provider/match_provider.dart';
 import '../provider/repository_providers.dart';
@@ -58,6 +59,6 @@ class MatchViewModel extends ViewModel {
   void signOut() {
     Auth.instance = null;
     CacheManager.instance.clear(CacheTag.AUTH);
-    GoRouter.of(context).go('/login');
+    Navigator.of(context).pushReplacementNamed(Routes.LOGIN);
   }
 }
