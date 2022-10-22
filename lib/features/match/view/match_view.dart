@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/features/match/provider/match_provider.dart';
 import 'package:frontend/features/match/viewmodel/match_viewmodel.dart';
+import 'package:frontend/gen/assets.gen.dart';
 
 class MatchView extends ConsumerStatefulWidget {
   const MatchView({super.key});
@@ -40,7 +41,15 @@ class _MatchViewState extends ConsumerState<MatchView> {
                 return const CircularProgressIndicator();
               }
 
-              return Text(match.username ?? '-');
+              return Column(
+                children: [
+                  Image.network(
+                    match.images?.first.url ?? '',
+                    errorBuilder: (context, error, stackTrace) => Assets.icons.userPlaceholder.image(),
+                  ),
+                  Text(match.username ?? '-'),
+                ],
+              );
             },
           ),
           Row(

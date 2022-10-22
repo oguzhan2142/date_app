@@ -22,8 +22,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/user.png
   AssetGenImage get user => const AssetGenImage('assets/icons/user.png');
 
+  /// File path: assets/icons/user_placeholder.png
+  AssetGenImage get userPlaceholder =>
+      const AssetGenImage('assets/icons/user_placeholder.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [conversation, fire, user];
+  List<AssetGenImage> get values => [conversation, fire, user, userPlaceholder];
 }
 
 class Assets {

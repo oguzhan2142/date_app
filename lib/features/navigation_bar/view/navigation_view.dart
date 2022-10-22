@@ -16,14 +16,14 @@ class NavigationView extends ConsumerStatefulWidget {
 
 class _NavigationViewState extends ConsumerState<NavigationView> {
   final icons = [
-    Assets.icons.user.path,
     Assets.icons.conversation.path,
+    Assets.icons.user.path,
     Assets.icons.fire.path,
   ];
 
   final pages = [
-    const ProfileView(),
     const ChatView(),
+    const ProfileView(),
     const MatchView(),
   ];
 

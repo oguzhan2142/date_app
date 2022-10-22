@@ -12,7 +12,7 @@ class AuthenticationRepository extends BaseRepository implements IAuthentication
   @override
   Future<Auth?> login({required LoginInput loginInput}) {
     return requestManager.getSingle<Auth?>(
-      path: '/api/user/login',
+      path: '/api/auth/login',
       requestType: RequestType.POST,
       body: loginInput.toJson(),
       converter: (json) => Auth.fromJson(json),
@@ -22,7 +22,7 @@ class AuthenticationRepository extends BaseRepository implements IAuthentication
   @override
   Future<Auth?> register({required AuthInput authInput}) {
     return requestManager.getSingle<Auth?>(
-      path: '/api/user/register',
+      path: '/api/auth/register',
       requestType: RequestType.POST,
       body: authInput.toJson(),
       converter: (json) => Auth.fromJson(json),

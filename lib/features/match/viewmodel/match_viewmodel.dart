@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/base/view_model.dart';
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
@@ -14,6 +16,8 @@ class MatchViewModel extends ViewModel {
     _initCurrentMatchUser();
   }
 
+  final queue = Queue<MatchUser>();
+
   void onSwipeLeft() => _swipe(false);
 
   void onSwipeRight() => _swipe(true);
@@ -24,12 +28,16 @@ class MatchViewModel extends ViewModel {
     }
     ref
         .read(apiRepositoryProvider)
-        .getNextMatchUser(
+        .getMatch(
           userId: Auth.instance!.user.id,
+          count: 1,
         )
-        .then(
-          (value) => ref.read(currentMatchProvider.state).state = value,
-        );
+        .then((value) {
+      if (value != null) {
+        queue.addAll(value);
+        _updateCurrent();
+      }
+    });
   }
 
   void _swipe(bool isAccepted) {
@@ -46,14 +54,27 @@ class MatchViewModel extends ViewModel {
     ref.read(currentMatchProvider.state).state = null;
     ref
         .read(apiRepositoryProvider)
-        .getNextMatchUser(
+        .getMatch(
           userId: Auth.instance!.user.id,
           targetUserId: targetUser.id,
+          count: 2,
           isAccepted: isAccepted,
         )
         .then(
-          (value) => ref.read(currentMatchProvider.state).state = value,
-        );
+      (value) {
+        if (value != null) {
+          queue.addAll(value);
+        }
+      },
+    );
+  }
+
+  void _updateCurrent() {
+    if (queue.isEmpty) {
+      return;
+    }
+    var user = queue.removeFirst();
+    ref.read(currentMatchProvider.state).state = user;
   }
 
   void signOut() {

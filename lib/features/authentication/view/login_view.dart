@@ -58,7 +58,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 final isLoading = ref.watch(loginBtnLoadingProvider);
                 return ElevatedButton(
                   onPressed: isLoading ? null : viewModel.onLogin,
-                  child: const Text('register'),
+                  child: const Text('login'),
                 );
               },
             )

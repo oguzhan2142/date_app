@@ -39,6 +39,7 @@ dependencies:
   json_serializable: ^6.5.1
   pretty_dio_logger: ^1.1.1
   shared_preferences: ^2.0.15
+  swipable_stack: ^2.0.0
   line_icons: ^2.0.0
 
 dev_dependencies:

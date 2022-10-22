@@ -10,6 +10,44 @@ class RequestManager {
     _dio.interceptors.add(PrettyDioLogger(requestBody: true));
     _dio.interceptors.add(TokenInterceptor());
   }
+  Future<List<T>?> getList<T>({
+    required String path,
+    required RequestType requestType,
+    required T Function(Map<String, dynamic> json) converter,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? body,
+  }) async {
+    try {
+      Response? response;
+      switch (requestType) {
+        case RequestType.GET:
+          response = await _dio.get(
+            path,
+            queryParameters: queryParameters,
+          );
+          break;
+        case RequestType.POST:
+          response = await _dio.post(
+            path,
+            queryParameters: queryParameters,
+            data: body,
+          );
+          break;
+        default:
+      }
+
+      var data = response?.data as List?;
+
+      if (data == null) {
+        return null;
+      }
+
+      return data.map((e) => converter(e)).toList();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   Future<T?> getSingle<T>({
     required String path,

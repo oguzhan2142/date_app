@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'image.dart';
+
 part 'match_user.g.dart';
 
 @JsonSerializable()
@@ -8,6 +10,7 @@ class MatchUser {
   String? firstName;
   String? lastName;
   int? age;
+  List<Image>? images;
 
   MatchUser({
     this.id,
@@ -15,6 +18,7 @@ class MatchUser {
     this.firstName,
     this.lastName,
     this.age,
+    this.images,
   });
 
   factory MatchUser.fromJson(Map<String, dynamic> json) => _$MatchUserFromJson(json);
