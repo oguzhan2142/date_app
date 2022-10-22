@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/base/view_model.dart';
+import 'package:frontend/features/match/provider/state_provider.dart';
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';
 import 'package:frontend/model/auth.dart';
@@ -34,6 +35,10 @@ class MatchViewModel extends ViewModel {
         )
         .then((value) {
       if (value != null) {
+        print(value);
+        if (value.isEmpty) {
+          ref.read(consumedAllProvider.state).state = true;
+        }
         queue.addAll(value);
         _updateCurrent();
       }
@@ -64,6 +69,7 @@ class MatchViewModel extends ViewModel {
       (value) {
         if (value != null) {
           queue.addAll(value);
+          _updateCurrent();
         }
       },
     );

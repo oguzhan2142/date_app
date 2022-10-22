@@ -39,15 +39,17 @@ class _NavigationViewState extends ConsumerState<NavigationView> {
     int index = ref.watch(navBarIndexProvider);
     return Scaffold(
       body: pages[index],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(navBarIndexProvider.state).state = pages.length - 1;
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: _item(pages.length - 1, pages.length - 1 == index),
-        ),
-      ),
+      floatingActionButton: pages.length - 1 == index
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                ref.read(navBarIndexProvider.state).state = pages.length - 1;
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: _item(pages.length - 1, pages.length - 1 == index),
+              ),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         backgroundColor: Theme.of(context).primaryColor,

@@ -21,6 +21,14 @@ class MatchUser {
     this.images,
   });
 
+  String? getFirstImage() {
+    if (images == null) return null;
+
+    if (images!.isEmpty) return null;
+
+    return images?.first.url;
+  }
+
   factory MatchUser.fromJson(Map<String, dynamic> json) => _$MatchUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$MatchUserToJson(this);
