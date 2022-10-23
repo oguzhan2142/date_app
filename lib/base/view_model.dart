@@ -8,5 +8,9 @@ abstract class ViewModel {
   ViewModel({
     required this.context,
     required this.ref,
-  });
+  }) {
+    init();
+  }
+
+  void init() {}
 }
