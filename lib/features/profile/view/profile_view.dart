@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/gen/assets.gen.dart';
+import 'package:frontend/model/auth.dart';
 
 class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
@@ -22,6 +23,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             radius: 80,
             child: Assets.icons.userPlaceholder.image(),
           ),
+          Text(Auth.instance?.user.firstName ?? ''),
           const SizedBox(height: 20),
           const Spacer(),
           ListTile(

@@ -1,3 +1,5 @@
+import 'package:frontend/features/chat/model/message.dart';
+
 import '../../../base/base_repository.dart';
 import '../../../enums/request_type.dart';
 import '../model/room.dart';
@@ -24,6 +26,24 @@ class ChatRepository extends BaseRepository implements IChatRepository {
       path: '/api/match/matches',
       requestType: RequestType.GET,
       converter: (json) => ChatMatch.fromJson(json),
+    );
+  }
+
+  @override
+  Future<List<Message>?> getMessages({
+    required String userId,
+    required String otherUserId,
+    required int page,
+  }) {
+    return requestManager.getList<Message>(
+      path: '/api/chat/messages',
+      queryParameters: {
+        'userId': userId,
+        'otherUserId': otherUserId,
+        'page': page,
+      },
+      requestType: RequestType.GET,
+      converter: (json) => Message.fromJson(json),
     );
   }
 }
