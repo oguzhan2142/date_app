@@ -5,6 +5,8 @@ import 'package:frontend/features/chat/provider/chat_state_providers.dart';
 import 'package:frontend/features/chat/viewmodel/chat_viewmodel.dart';
 import 'package:frontend/features/chat/widget/chat_match_list_item.dart';
 
+import '../widget/room_list_item.dart';
+
 class ChatView extends ConsumerStatefulWidget {
   const ChatView({super.key});
 
@@ -28,8 +30,14 @@ class _ChatViewState extends ConsumerState<ChatView> {
       body: Padding(
         padding: PaddingType.PAGE.insets,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
+            Text(
+              'Matches',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            const SizedBox(height: 5),
             SizedBox(
               height: 65,
               child: Consumer(
@@ -44,6 +52,26 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     separatorBuilder: (_, index) => const SizedBox(
                       width: 10,
                     ),
+                  );
+                },
+              ),
+            ),
+            const Divider(),
+            Text(
+              'Messages',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            Expanded(
+              child: Consumer(
+                builder: (context, ref, child) {
+                  var rooms = ref.watch(roomsProvider);
+                  return ListView.builder(
+                    itemCount: rooms.length,
+                    itemBuilder: (context, index) {
+                      return RoomListItem(
+                        room: rooms[index],
+                      );
+                    },
                   );
                 },
               ),

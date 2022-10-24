@@ -1,22 +1,12 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/features/chat/model/chat_match.dart';
 import 'package:frontend/features/chat/viewmodel/chat_detail_view_model.dart';
 import 'package:frontend/gen/assets.gen.dart';
 
-String randomString() {
-  final random = Random.secure();
-  final values = List<int>.generate(16, (i) => random.nextInt(255));
-  return base64UrlEncode(values);
-}
-
 class ChatDetailView extends ConsumerStatefulWidget {
-  final ChatMatch chatMatch;
-  const ChatDetailView({super.key, required this.chatMatch});
+  final String otherUserId;
+  const ChatDetailView({super.key, required this.otherUserId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ChatDetailViewState();
@@ -30,7 +20,7 @@ class _ChatDetailViewState extends ConsumerState<ChatDetailView> {
     viewModel = ChatDetailViewModel(
       context: context,
       ref: ref,
-      chatMatch: widget.chatMatch,
+      otherUserId: widget.otherUserId,
     );
 
     super.initState();
@@ -50,6 +40,12 @@ class _ChatDetailViewState extends ConsumerState<ChatDetailView> {
         builder: (context, ref, child) {
           var messages = ref.watch(viewModel.messagesProvider);
           var isLastPage = ref.watch(viewModel.lasPageProvider);
+
+          var isInitialized = ref.watch(viewModel.isInitializedProvider);
+
+          if (!isInitialized) {
+            return const SizedBox();
+          }
           return Chat(
             showUserAvatars: true,
             showUserNames: true,
@@ -62,7 +58,7 @@ class _ChatDetailViewState extends ConsumerState<ChatDetailView> {
             messages: messages,
             onEndReached: viewModel.onEndReached,
             onSendPressed: viewModel.onSendPressed,
-            user: viewModel.user,
+            user: viewModel.userModel,
           );
         },
       ),

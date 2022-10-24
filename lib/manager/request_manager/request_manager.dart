@@ -7,7 +7,7 @@ class RequestManager {
   late final Dio _dio;
   RequestManager(String baseUrl) {
     _dio = Dio(BaseOptions(baseUrl: baseUrl));
-    _dio.interceptors.add(PrettyDioLogger(requestBody: true));
+    _dio.interceptors.add(PrettyDioLogger(responseBody: true));
     _dio.interceptors.add(TokenInterceptor());
   }
   Future<List<T>?> getList<T>({

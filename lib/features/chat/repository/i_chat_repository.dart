@@ -1,3 +1,5 @@
+import 'package:frontend/model/user.dart';
+
 import '../model/message.dart';
 import '../model/room.dart';
 import '../model/chat_match.dart';
@@ -12,4 +14,6 @@ abstract class IChatRepository {
     required String otherUserId,
     required int page,
   });
+
+  Future<User?> getUserById({required String userId});
 }

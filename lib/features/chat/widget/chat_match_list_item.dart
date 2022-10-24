@@ -15,7 +15,7 @@ class ChatMatchListItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ChatDetailView(chatMatch: chatMatch),
+          builder: (context) => ChatDetailView(otherUserId: chatMatch.userId!),
         ));
       },
       child: CircleAvatar(
