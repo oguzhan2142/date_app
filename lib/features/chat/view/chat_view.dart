@@ -47,7 +47,12 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     itemCount: matches.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return ChatMatchListItem(chatMatch: matches[index]);
+                      return ChatMatchListItem(
+                        chatMatch: matches[index],
+                        onTap: () => viewModel.navigateToChatDetail(
+                          matches[index].userId!,
+                        ),
+                      );
                     },
                     separatorBuilder: (_, index) => const SizedBox(
                       width: 10,
@@ -69,6 +74,9 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     itemCount: rooms.length,
                     itemBuilder: (context, index) {
                       return RoomListItem(
+                        onTap: () => viewModel.navigateToChatDetail(
+                          rooms[index].contact!.id!,
+                        ),
                         room: rooms[index],
                       );
                     },

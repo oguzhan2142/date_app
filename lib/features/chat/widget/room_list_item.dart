@@ -3,11 +3,11 @@ import 'package:frontend/gen/assets.gen.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 
 import '../model/room.dart';
-import '../view/chat_detail_view.dart';
 
 class RoomListItem extends StatelessWidget {
   final Room room;
-  const RoomListItem({super.key, required this.room});
+  final VoidCallback onTap;
+  const RoomListItem({super.key, required this.room, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,7 @@ class RoomListItem extends StatelessWidget {
       timeAgo = GetTimeAgo.parse(date!);
     } catch (e) {}
     return ListTile(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ChatDetailView(otherUserId: room.contact!.id!),
-        ));
-      },
+      onTap: onTap,
       leading: CircleAvatar(
         backgroundImage: AssetImage(Assets.icons.userPlaceholder.path),
       ),
