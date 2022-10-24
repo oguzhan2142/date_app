@@ -1,57 +1,67 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/features/chat/provider/chat_repository_provider.dart';
+import 'package:frontend/model/user.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../base/view_model.dart';
 import '../../../constants/string_consts.dart';
 import '../../../model/auth.dart';
-import '../model/chat_match.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class ChatDetailViewModel extends ViewModel {
-  final ChatMatch chatMatch;
+  final String otherUserId;
+
   final messagesProvider = StateProvider<List<types.Message>>((ref) {
     return [];
   });
-  final lasPageProvider = StateProvider<bool>((ref) {
-    return false;
-  });
+  final lasPageProvider = StateProvider<bool>((ref) => false);
+
+  final isInitializedProvider = StateProvider<bool>((ref) => false);
 
   ChatDetailViewModel({
     required super.context,
     required super.ref,
-    required this.chatMatch,
+    required this.otherUserId,
   });
 
   late final String url;
   late IO.Socket socket;
-  late final types.User user;
-  late final types.User otherUser;
+  late final types.User userModel;
+  late final types.User otherUserModel;
 
   final _uuid = const Uuid();
 
   int _page = 0;
   bool _isFetching = false;
-
+  User? otherUser;
   String _generateRandomMessageId() => _uuid.v4();
   @override
-  void init() {
-    url = "$baseUrl?userId=${Auth.instance!.user.id}&otherUserId=${chatMatch.userId}";
+  void init() async {
+    otherUser = await ref.read(chatRepositoryProvider).getUserById(
+          userId: otherUserId,
+        );
+
+    if (otherUser == null) {
+      // Navigator.of(context).pop();
+      return;
+    }
+
+    url = "$baseUrl?userId=${Auth.instance!.user.id}&otherUserId=$otherUserId";
     socket = IO.io(url, OptionBuilder().setTransports(['websocket']).build());
 
-    user = types.User(id: Auth.instance!.user.id);
-    otherUser = types.User(
-      id: chatMatch.userId!,
-      firstName: chatMatch.firstName,
-      lastName: chatMatch.lastName,
+    userModel = types.User(id: Auth.instance!.user.id);
+    otherUserModel = types.User(
+      id: otherUser!.id,
+      firstName: otherUser!.firstName,
+      lastName: otherUser!.lastName,
     );
 
     socket.on('message', (data) {
       var message = types.TextMessage(
-        author: otherUser,
+        author: otherUserModel,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         id: _generateRandomMessageId(),
         text: data,
@@ -61,7 +71,9 @@ class ChatDetailViewModel extends ViewModel {
     });
 
     socket.connect();
-    onEndReached();
+    await onEndReached();
+
+    ref.read(isInitializedProvider.state).state = true;
     super.init();
   }
 
@@ -73,7 +85,7 @@ class ChatDetailViewModel extends ViewModel {
 
   void onSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
-      author: user,
+      author: userModel,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: _generateRandomMessageId(),
       text: message.text,
@@ -96,7 +108,7 @@ class ChatDetailViewModel extends ViewModel {
     _isFetching = true;
     var fetchedMessages = await ref.read(chatRepositoryProvider).getMessages(
           userId: Auth.instance!.user.id,
-          otherUserId: chatMatch.userId!,
+          otherUserId: otherUserId,
           page: _page,
         );
     if (fetchedMessages == null) {
@@ -109,7 +121,7 @@ class ChatDetailViewModel extends ViewModel {
     var models = fetchedMessages
         .map((e) => types.TextMessage(
               id: e.id!,
-              author: e.userId == chatMatch.userId ? otherUser : user,
+              author: e.userId == otherUserId ? otherUserModel : userModel,
               text: e.content!,
               createdAt: DateTime.tryParse(e.createdAt ?? '')?.millisecondsSinceEpoch,
             ))
