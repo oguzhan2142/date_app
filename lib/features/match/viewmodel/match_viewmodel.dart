@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/base/view_model.dart';
-import 'package:frontend/features/match/provider/state_provider.dart';
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';
 import 'package:frontend/model/auth.dart';
@@ -16,6 +16,9 @@ class MatchViewModel extends ViewModel {
   MatchViewModel({required super.context, required super.ref}) {
     _initCurrentMatchUser();
   }
+  final consumedAllProvider = StateProvider<bool>((ref) {
+    return false;
+  });
 
   final queue = Queue<MatchUser>();
 
@@ -81,11 +84,5 @@ class MatchViewModel extends ViewModel {
     }
     var user = queue.removeFirst();
     ref.read(currentMatchProvider.state).state = user;
-  }
-
-  void signOut() {
-    Auth.instance = null;
-    CacheManager.instance.clear(CacheTag.AUTH);
-    Navigator.of(context).pushReplacementNamed(Routes.LOGIN);
   }
 }

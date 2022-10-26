@@ -30,10 +30,21 @@ class $AssetsIconsGen {
   List<AssetGenImage> get values => [conversation, fire, user, userPlaceholder];
 }
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/test.jpeg
+  AssetGenImage get test => const AssetGenImage('assets/images/test.jpeg');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [test];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
 class AssetGenImage {

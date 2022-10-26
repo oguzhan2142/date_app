@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/enums/padding_type.dart';
 import 'package:frontend/features/match/provider/match_provider.dart';
-import 'package:frontend/features/match/provider/state_provider.dart';
 import 'package:frontend/features/match/viewmodel/match_viewmodel.dart';
 import 'package:frontend/gen/assets.gen.dart';
 
@@ -24,66 +24,86 @@ class _MatchViewState extends ConsumerState<MatchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: viewModel.signOut,
-            icon: const Icon(Icons.logout_outlined),
-          ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Consumer(
-            builder: (context, ref, child) {
-              var match = ref.watch(currentMatchProvider);
+      appBar: AppBar(),
+      body: Padding(
+        padding: PaddingType.PAGE.insets,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Consumer(
+              builder: (context, ref, child) {
+                var match = ref.watch(currentMatchProvider);
 
-              var consumedAll = ref.watch(consumedAllProvider);
-              if (consumedAll) {
-                return const Text('You consumed all people');
-              }
-              if (match == null) {
-                return const CircularProgressIndicator();
-              }
+                var consumedAll = ref.watch(viewModel.consumedAllProvider);
+                if (consumedAll) {
+                  return const Text('You consumed all people');
+                }
+                if (match == null) {
+                  return const CircularProgressIndicator();
+                }
 
-              return Column(
-                children: [
-                  Image.network(
-                    match.getFirstImage() ?? '',
-                    errorBuilder: (context, error, stackTrace) => Assets.icons.userPlaceholder.image(),
-                  ),
-                  Text(match.username ?? '-'),
-                ],
-              );
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CircleAvatar(
-                radius: 28,
-                child: IconButton(
-                  onPressed: viewModel.onSwipeLeft,
-                  icon: const Icon(
-                    Icons.close,
-                    size: 30,
+                return Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Image.network(
+                            match.getFirstImage() ?? '',
+                            errorBuilder: (context, error, stackTrace) => Assets.images.test.image(),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.center,
+                                  colors: [
+                                    Theme.of(context).primaryColor.withOpacity(0.5),
+                                    Theme.of(context).primaryColor.withOpacity(0.01),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(match.username ?? '-'),
+                  ],
+                );
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CircleAvatar(
+                  radius: 28,
+                  child: IconButton(
+                    onPressed: viewModel.onSwipeLeft,
+                    icon: const Icon(
+                      Icons.close,
+                      size: 30,
+                    ),
                   ),
                 ),
-              ),
-              CircleAvatar(
-                radius: 28,
-                child: IconButton(
-                  onPressed: viewModel.onSwipeRight,
-                  icon: const Icon(
-                    Icons.favorite,
-                    size: 30,
+                CircleAvatar(
+                  radius: 28,
+                  child: IconButton(
+                    onPressed: viewModel.onSwipeRight,
+                    icon: const Icon(
+                      Icons.favorite,
+                      size: 30,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

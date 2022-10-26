@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/features/authentication/view/login_view.dart';
 import 'package:frontend/features/authentication/view/register_view.dart';
 import 'package:frontend/features/onboarding/view/splash_view.dart';
+import 'package:frontend/features/profile/view/photos_view.dart';
 import 'package:frontend/features/profile/view/settings_view.dart';
 import 'package:frontend/model/auth.dart';
 import 'package:frontend/router/routes.dart';
@@ -18,6 +19,7 @@ class RouteManager {
     Routes.REGISTER: (context) => const RegisterView(),
     Routes.SPLASH: (context) => const SplashView(),
     Routes.NAVIGATION: (context) => const NavigationView(),
+    Routes.PHOTOS: (context) => const PhotosView(),
   };
 
   Widget getHome() {

@@ -39,11 +39,14 @@ dependencies:
   json_annotation: ^4.7.0
   json_serializable: ^6.5.1
   line_icons: ^2.0.0
+  image_picker: ^0.8.6
   pretty_dio_logger: ^1.1.1
   shared_preferences: ^2.0.15
   get_time_ago: ^1.1.6
+  image_cropper: ^3.0.0
   socket_io_client: ^2.0.0
   swipable_stack: ^2.0.0
+  reorderable_grid_view: ^2.2.5
   uuid: ^3.0.6
 
 dev_dependencies:
@@ -64,6 +67,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icons/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
