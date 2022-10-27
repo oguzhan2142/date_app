@@ -14,16 +14,16 @@ class PhotoListItem extends StatelessWidget {
   final void Function(int oldIndex, int newIndex) onIndexChanged;
 
   Widget _buildChild() {
-    if (orderImage.isMemory) {
-      if (orderImage.bytes == null) return const SizedBox();
+    if (orderImage.orderImageType != OrderImageType.API) {
+      if (orderImage.data == null) return const SizedBox();
       return Image.memory(
-        orderImage.bytes!,
+        orderImage.data,
       );
     }
 
-    if (orderImage.url == null) return const SizedBox();
+    if (orderImage.data == null) return const SizedBox();
     return Image.network(
-      orderImage.url!,
+      orderImage.data.url,
     );
   }
 
@@ -46,7 +46,7 @@ class PhotoListItem extends StatelessWidget {
             ),
             child: DragTarget<int>(
               onAccept: (data) {
-                onIndexChanged(index, data);
+                onIndexChanged(data, index);
               },
               builder: (context, candidateData, rejectedData) {
                 return _buildChild();

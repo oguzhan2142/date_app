@@ -1,13 +1,11 @@
-import 'dart:typed_data';
+enum OrderImageType { API, WILL_UPLOAD, API_DELETE }
 
 class OrderImage {
-  final Uint8List? bytes;
-  final String? url;
+  final OrderImageType orderImageType;
+  final dynamic data;
 
   OrderImage({
-    this.bytes,
-    this.url,
+    required this.orderImageType,
+    this.data,
   });
-
-  bool get isMemory => bytes != null;
 }

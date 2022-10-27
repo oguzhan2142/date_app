@@ -56,7 +56,7 @@ class _PhotosViewState extends ConsumerState<PhotosView> {
                         onIndexChanged: viewModel.onIndexChanged,
                         orderImage: images[index],
                       )),
-              _addPhoto(),
+              if (images.length != 9) _addPhoto(),
             ],
           );
         },

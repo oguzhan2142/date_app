@@ -33,6 +33,13 @@ class RequestManager {
             data: body,
           );
           break;
+        case RequestType.PUT:
+          response = await _dio.put(
+            path,
+            queryParameters: queryParameters,
+            data: body,
+          );
+          break;
         default:
       }
 
@@ -54,7 +61,7 @@ class RequestManager {
     required RequestType requestType,
     required T Function(Map<String, dynamic> json) converter,
     Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? body,
+    dynamic body,
   }) async {
     try {
       Response? response;
@@ -67,6 +74,13 @@ class RequestManager {
           break;
         case RequestType.POST:
           response = await _dio.post(
+            path,
+            queryParameters: queryParameters,
+            data: body,
+          );
+          break;
+        case RequestType.PUT:
+          response = await _dio.put(
             path,
             queryParameters: queryParameters,
             data: body,
@@ -87,6 +101,45 @@ class RequestManager {
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  Future<bool> getResult({
+    required String path,
+    required RequestType requestType,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? body,
+  }) async {
+    try {
+      Response? response;
+      switch (requestType) {
+        case RequestType.GET:
+          response = await _dio.get(
+            path,
+            queryParameters: queryParameters,
+          );
+          break;
+        case RequestType.POST:
+          response = await _dio.post(
+            path,
+            queryParameters: queryParameters,
+            data: body,
+          );
+          break;
+        case RequestType.PUT:
+          response = await _dio.put(
+            path,
+            queryParameters: queryParameters,
+            data: body,
+          );
+          break;
+        default:
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 }
