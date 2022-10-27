@@ -133,6 +133,13 @@ class RequestManager {
             data: body,
           );
           break;
+        case RequestType.DELETE:
+          response = await _dio.delete(
+            path,
+            queryParameters: queryParameters,
+            data: body,
+          );
+          break;
         default:
       }
 

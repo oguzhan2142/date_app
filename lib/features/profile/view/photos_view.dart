@@ -44,8 +44,8 @@ class _PhotosViewState extends ConsumerState<PhotosView> {
           return GridView.count(
             padding: const EdgeInsets.all(10),
             crossAxisCount: 3,
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
             childAspectRatio: photoAspectRatio,
             //   physics: const NeverScrollableScrollPhysics(),
             children: [
@@ -53,6 +53,7 @@ class _PhotosViewState extends ConsumerState<PhotosView> {
                   images.length,
                   (index) => PhotoListItem(
                         index: index,
+                        onDeletePhoto: viewModel.onDeletePhoto,
                         onIndexChanged: viewModel.onIndexChanged,
                         orderImage: images[index],
                       )),

@@ -14,4 +14,9 @@ abstract class IProfileRepository {
     required String key,
     required String filePath,
   });
+
+  Future<bool> deletePhoto({
+    required String userId,
+    required String photoId,
+  });
 }

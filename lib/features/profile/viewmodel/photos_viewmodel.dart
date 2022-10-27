@@ -125,4 +125,15 @@ class PhotosViewModel extends ViewModel {
       key: currentImages[oldIndex].data.key,
     );
   }
+
+  void onDeletePhoto(String photoId) async {
+    bool isSuccess = await profileRepository.deletePhoto(
+      userId: Auth.instance!.user.id,
+      photoId: photoId,
+    );
+
+    if (isSuccess) {
+      _initUserPhotos();
+    }
+  }
 }

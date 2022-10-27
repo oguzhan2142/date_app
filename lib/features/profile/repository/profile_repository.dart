@@ -54,4 +54,15 @@ class ProfileRepository extends BaseRepository implements IProfileRepository {
     );
     return result;
   }
+
+  @override
+  Future<bool> deletePhoto({
+    required String userId,
+    required String photoId,
+  }) {
+    return requestManager.getResult(
+      path: '/api/photo/$userId/$photoId',
+      requestType: RequestType.DELETE,
+    );
+  }
 }
