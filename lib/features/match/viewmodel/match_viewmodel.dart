@@ -1,13 +1,9 @@
 import 'dart:collection';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/base/view_model.dart';
-import 'package:frontend/manager/cache_manager/cache_manager.dart';
-import 'package:frontend/manager/cache_manager/cache_tags.dart';
 import 'package:frontend/model/auth.dart';
 
-import '../../../router/routes.dart';
 import '../model/match_user.dart';
 import '../provider/match_provider.dart';
 import '../provider/repository_providers.dart';
@@ -16,9 +12,9 @@ class MatchViewModel extends ViewModel {
   MatchViewModel({required super.context, required super.ref}) {
     _initCurrentMatchUser();
   }
-  final consumedAllProvider = StateProvider<bool>((ref) {
-    return false;
-  });
+  final consumedAllProvider = StateProvider<bool>((ref) => false);
+
+  final imageIndexProvider = StateProvider<int>((ref) => 0);
 
   final queue = Queue<MatchUser>();
 
@@ -84,5 +80,29 @@ class MatchViewModel extends ViewModel {
     }
     var user = queue.removeFirst();
     ref.read(currentMatchProvider.state).state = user;
+  }
+
+  int _imagesLength() {
+    var match = ref.read(currentMatchProvider);
+    return match?.images?.length ?? 0;
+  }
+
+  void increaseIndex() {
+    var index = ref.read(imageIndexProvider);
+
+    if (index >= _imagesLength() - 1) {
+      return;
+    }
+    ref.read(imageIndexProvider.state).state = index + 1;
+  }
+
+  void decreaseIndex() {
+    var index = ref.read(imageIndexProvider);
+
+    if (index <= 0) {
+      return;
+    }
+
+    ref.read(imageIndexProvider.state).state = index - 1;
   }
 }

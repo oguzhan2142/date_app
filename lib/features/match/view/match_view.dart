@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:frontend/constants/double_consts.dart';
 import 'package:frontend/enums/padding_type.dart';
 import 'package:frontend/features/match/provider/match_provider.dart';
 import 'package:frontend/features/match/viewmodel/match_viewmodel.dart';
-import 'package:frontend/gen/assets.gen.dart';
+import 'package:frontend/features/match/widget/clickable_image.dart';
 
 import '../model/match_user.dart';
 import '../widget/circle_button.dart';
+import '../widget/line_indicator.dart';
 
 class MatchView extends ConsumerStatefulWidget {
   const MatchView({super.key});
@@ -23,80 +25,6 @@ class _MatchViewState extends ConsumerState<MatchView> {
   void initState() {
     viewModel = MatchViewModel(context: context, ref: ref);
     super.initState();
-  }
-
-  Container _opacityEffect(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.3,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.center,
-          colors: [
-            Theme.of(context).primaryColor.withOpacity(0.5),
-            Theme.of(context).primaryColor.withOpacity(0.01),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: PaddingType.PAGE.insets,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Consumer(
-              builder: (context, ref, child) {
-                var match = ref.watch(currentMatchProvider);
-
-                var consumedAll = ref.watch(viewModel.consumedAllProvider);
-                if (consumedAll) {
-                  return const Text('You consumed all people');
-                }
-                if (match == null) {
-                  return const CircularProgressIndicator();
-                }
-
-                return Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          AspectRatio(
-                            aspectRatio: photoAspectRatio,
-                            child: Image.network(
-                              match.getFirstImage() ?? '',
-                              errorBuilder: (context, error, stackTrace) => Assets.images.test.image(),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: _opacityEffect(context),
-                          ),
-                          Positioned(
-                            bottom: 15,
-                            left: 0,
-                            right: 0,
-                            child: _buttonsAndInformation(context, match),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _buttonsAndInformation(BuildContext context, MatchUser? match) {
@@ -152,6 +80,95 @@ class _MatchViewState extends ConsumerState<MatchView> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Container _opacityEffect(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.15,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.center,
+          colors: [
+            Colors.black.withOpacity(1),
+            Colors.black.withOpacity(0.02),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Padding(
+        padding: PaddingType.PHOTO.insets,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Consumer(
+              builder: (context, ref, child) {
+                var match = ref.watch(currentMatchProvider);
+
+                var consumedAll = ref.watch(viewModel.consumedAllProvider);
+                if (consumedAll) {
+                  return const Text('You consumed all people');
+                }
+                if (match == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                var imageIndex = ref.watch(viewModel.imageIndexProvider);
+
+                return Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: photoAspectRatio,
+                            child: ClickableImage(
+                              url: match.images?[imageIndex].url ?? '',
+                              leftPressed: viewModel.decreaseIndex,
+                              rightPressed: viewModel.increaseIndex,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: _opacityEffect(context),
+                          ),
+                          Positioned(
+                            bottom: 15,
+                            left: 0,
+                            right: 0,
+                            child: _buttonsAndInformation(context, match),
+                          ),
+                          Positioned(
+                            top: 15,
+                            left: 0,
+                            right: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: LineIndicator(
+                                size: match.images?.length ?? 0,
+                                index: imageIndex,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
