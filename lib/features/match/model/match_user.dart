@@ -9,6 +9,7 @@ class MatchUser {
   String? username;
   String? firstName;
   String? lastName;
+  double? distance;
   int? age;
   List<Image>? images;
 
@@ -17,9 +18,18 @@ class MatchUser {
     this.username,
     this.firstName,
     this.lastName,
+    this.distance,
     this.age,
     this.images,
   });
+
+  String getDistance() {
+    if (distance == null) return '';
+    if (distance! < 1) {
+      return distance!.toStringAsFixed(1);
+    }
+    return distance!.toInt().toString();
+  }
 
   String? getFirstImage() {
     if (images == null) return null;

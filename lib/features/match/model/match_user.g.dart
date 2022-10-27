@@ -11,6 +11,7 @@ MatchUser _$MatchUserFromJson(Map<String, dynamic> json) => MatchUser(
       username: json['username'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
+      distance: (json['distance'] as num?)?.toDouble(),
       age: json['age'] as int?,
       images: (json['images'] as List<dynamic>?)
           ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
@@ -22,6 +23,7 @@ Map<String, dynamic> _$MatchUserToJson(MatchUser instance) => <String, dynamic>{
       'username': instance.username,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'distance': instance.distance,
       'age': instance.age,
       'images': instance.images,
     };
