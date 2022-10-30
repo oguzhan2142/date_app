@@ -5,18 +5,20 @@ import 'package:frontend/base/view_model.dart';
 import 'package:frontend/model/auth.dart';
 
 import '../model/match_user.dart';
-import '../provider/match_provider.dart';
 import '../provider/repository_providers.dart';
 
 class MatchViewModel extends ViewModel {
-  MatchViewModel({required super.context, required super.ref}) {
+  MatchViewModel({required super.context, required super.ref});
+
+  @override
+  void init() {
     _initCurrentMatchUser();
+    super.init();
   }
+
   final consumedAllProvider = StateProvider<bool>((ref) => false);
-
-  final imageIndexProvider = StateProvider<int>((ref) => 0);
-
-  final queue = Queue<MatchUser>();
+  final currentMatchProvider = StateProvider<MatchUser?>((ref) => null);
+  Queue queue = Queue();
 
   void onSwipeLeft() => _swipe(false);
 
@@ -30,18 +32,25 @@ class MatchViewModel extends ViewModel {
         .read(apiRepositoryProvider)
         .getMatch(
           userId: Auth.instance!.user.id,
-          count: 1,
+          count: 2,
         )
         .then((value) {
       if (value != null) {
-        print(value);
         if (value.isEmpty) {
           ref.read(consumedAllProvider.state).state = true;
         }
         queue.addAll(value);
-        _updateCurrent();
       }
+      _updateCurrent();
     });
+  }
+
+  void _updateCurrent() {
+    if (queue.isEmpty) {
+      return;
+    }
+    var user = queue.removeFirst();
+    ref.read(currentMatchProvider.state).state = user;
   }
 
   void _swipe(bool isAccepted) {
@@ -49,13 +58,13 @@ class MatchViewModel extends ViewModel {
       return;
     }
 
-    MatchUser? targetUser = ref.read(currentMatchProvider.state).state;
+    MatchUser? targetUser = ref.read(currentMatchProvider);
 
     if (targetUser == null) {
       _initCurrentMatchUser();
       return;
     }
-    ref.read(currentMatchProvider.state).state = null;
+
     ref
         .read(apiRepositoryProvider)
         .getMatch(
@@ -68,41 +77,9 @@ class MatchViewModel extends ViewModel {
       (value) {
         if (value != null) {
           queue.addAll(value);
-          _updateCurrent();
         }
       },
     );
-  }
-
-  void _updateCurrent() {
-    if (queue.isEmpty) {
-      return;
-    }
-    var user = queue.removeFirst();
-    ref.read(currentMatchProvider.state).state = user;
-  }
-
-  int _imagesLength() {
-    var match = ref.read(currentMatchProvider);
-    return match?.images?.length ?? 0;
-  }
-
-  void increaseIndex() {
-    var index = ref.read(imageIndexProvider);
-
-    if (index >= _imagesLength() - 1) {
-      return;
-    }
-    ref.read(imageIndexProvider.state).state = index + 1;
-  }
-
-  void decreaseIndex() {
-    var index = ref.read(imageIndexProvider);
-
-    if (index <= 0) {
-      return;
-    }
-
-    ref.read(imageIndexProvider.state).state = index - 1;
+    _updateCurrent();
   }
 }

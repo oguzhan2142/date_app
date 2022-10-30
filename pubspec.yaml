@@ -45,8 +45,10 @@ dependencies:
   get_time_ago: ^1.1.6
   image_cropper: ^3.0.0
   socket_io_client: ^2.0.0
-  swipable_stack: ^2.0.0
+  swipeable_card_stack: ^0.0.5
   reorderable_grid_view: ^2.2.5
+  swipable_stack: ^2.0.0
+
   uuid: ^3.0.6
 
 dev_dependencies:
