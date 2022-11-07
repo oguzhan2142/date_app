@@ -48,6 +48,7 @@ dependencies:
   swipeable_card_stack: ^0.0.5
   reorderable_grid_view: ^2.2.5
   swipable_stack: ^2.0.0
+  flutter_tindercard: ^0.2.0
 
   uuid: ^3.0.6
 

@@ -5,6 +5,6 @@ import 'package:frontend/manager/request_manager/request_manager.dart';
 import '../repository/i_match_repository.dart';
 import '../repository/match_repository.dart';
 
-final apiRepositoryProvider = Provider<IMatchRepository>((ref) {
+final matchRepositoryProvider = Provider<IMatchRepository>((ref) {
   return MatchRepository(requestManager: RequestManager(baseUrl));
 });

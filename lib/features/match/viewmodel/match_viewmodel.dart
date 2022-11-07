@@ -1,7 +1,6 @@
-import 'dart:collection';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/base/view_model.dart';
+import 'package:frontend/enums/swipe_direction.dart';
 import 'package:frontend/model/auth.dart';
 
 import '../model/match_user.dart';
@@ -17,19 +16,37 @@ class MatchViewModel extends ViewModel {
   }
 
   final consumedAllProvider = StateProvider<bool>((ref) => false);
-  final currentMatchProvider = StateProvider<MatchUser?>((ref) => null);
-  Queue queue = Queue();
 
-  void onSwipeLeft() => _swipe(false);
+  final queueProvider = StateProvider<List<MatchUser>>((ref) {
+    return <MatchUser>[];
+  });
 
-  void onSwipeRight() => _swipe(true);
+  void onSwipeLeft() => _swipe(SwipeDirection.LEFT);
+
+  void onSwipeRight() => _swipe(SwipeDirection.RIGHT);
+
+  void _addItemsToQueue(Iterable<MatchUser> users) {
+    var queue = ref.read(queueProvider);
+
+    ref.read(queueProvider.state).state = [...queue, ...users];
+  }
+
+  MatchUser? _popFirstFromQueue() {
+    var queue = ref.read(queueProvider);
+    if (queue.isEmpty) return null;
+
+    var user = queue.removeAt(0);
+
+    ref.read(queueProvider.state).state = queue;
+    return user;
+  }
 
   void _initCurrentMatchUser() {
     if (Auth.isNull) {
       return;
     }
     ref
-        .read(apiRepositoryProvider)
+        .read(matchRepositoryProvider)
         .getMatch(
           userId: Auth.instance!.user.id,
           count: 2,
@@ -39,47 +56,54 @@ class MatchViewModel extends ViewModel {
         if (value.isEmpty) {
           ref.read(consumedAllProvider.state).state = true;
         }
-        queue.addAll(value);
+
+        _addItemsToQueue(value);
       }
-      _updateCurrent();
+      // _updateCurrent();
     });
   }
 
-  void _updateCurrent() {
-    if (queue.isEmpty) {
-      return;
-    }
-    var user = queue.removeFirst();
-    ref.read(currentMatchProvider.state).state = user;
+  void _fillQueue() {
+    ref
+        .read(matchRepositoryProvider)
+        .getMatch(
+          userId: Auth.instance!.user.id,
+          count: 2,
+        )
+        .then((value) {
+      var queue = ref.read(queueProvider);
+      if (value != null) {
+        ref.read(queueProvider.state).state = [...queue, ...value];
+      }
+    });
   }
 
-  void _swipe(bool isAccepted) {
+  void _swipe(SwipeDirection swipeDirection) {
     if (Auth.isNull) {
       return;
     }
 
-    MatchUser? targetUser = ref.read(currentMatchProvider);
+    MatchUser? targetUser = _popFirstFromQueue();
 
     if (targetUser == null) {
-      _initCurrentMatchUser();
+      _fillQueue();
       return;
     }
 
     ref
-        .read(apiRepositoryProvider)
-        .getMatch(
+        .read(matchRepositoryProvider)
+        .postMach(
           userId: Auth.instance!.user.id,
-          targetUserId: targetUser.id,
-          count: 2,
-          isAccepted: isAccepted,
+          targetUserId: targetUser.id!,
+          swipeDirection: swipeDirection,
         )
         .then(
       (value) {
-        if (value != null) {
-          queue.addAll(value);
+        var queue = ref.read(queueProvider);
+        if (queue.length < 3) {
+          _fillQueue();
         }
       },
     );
-    _updateCurrent();
   }
 }
