@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/base/view_model.dart';
-import 'package:frontend/features/profile/model/order_image.dart';
-import 'package:frontend/features/profile/provider/profile_repository_provider.dart';
 import 'package:frontend/model/auth.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 
 import '../repository/i_profile_repository.dart';
 
 class PhotosViewModel extends ViewModel {
-  PhotosViewModel({required super.context, required super.ref});
+  PhotosViewModel();
 
-  final imagesProvider = StateProvider<List<OrderImage>>((ref) {
-    return [];
-  });
+  // final imagesProvider = StateProvider<List<OrderImage>>((ref) {
+  //   return [];
+  // });
 
   late final IProfileRepository profileRepository;
 
   @override
   void init() {
-    profileRepository = ref.read(profileRepositoryProvider);
+    // profileRepository = ref.read(profileRepositoryProvider);
     _initUserPhotos();
     super.init();
   }
@@ -32,13 +28,13 @@ class PhotosViewModel extends ViewModel {
       userId: Auth.instance!.user.id,
     )
         .then((value) {
-      ref.read(imagesProvider.state).state = value
-              ?.map((e) => OrderImage(
-                    orderImageType: OrderImageType.API,
-                    data: e,
-                  ))
-              .toList() ??
-          [];
+      // ref.read(imagesProvider.state).state = value
+      //         ?.map((e) => OrderImage(
+      //               orderImageType: OrderImageType.API,
+      //               data: e,
+      //             ))
+      //         .toList() ??
+      //     [];
     });
   }
 
@@ -69,7 +65,7 @@ class PhotosViewModel extends ViewModel {
       ],
     );
 
-    var images = ref.read(imagesProvider);
+    // var images = ref.read(imagesProvider);
 
     var bytes = await croppedFile?.readAsBytes();
 
@@ -81,59 +77,58 @@ class PhotosViewModel extends ViewModel {
       return;
     }
 
-    ref.read(imagesProvider.state).state = [
-      ...images,
-      OrderImage(
-        orderImageType: OrderImageType.WILL_UPLOAD,
-        data: bytes,
-      )
-    ];
-    var result = await ref.read(profileRepositoryProvider).uploadPhoto(
-          userId: Auth.instance!.user.id,
-          key: const Uuid().v4(),
-          filePath: croppedFile.path,
-        );
+    // ref.read(imagesProvider.state).state = [
+    //   ...images,
+    //   OrderImage(
+    //     orderImageType: OrderImageType.WILL_UPLOAD,
+    //     data: bytes,
+    //   )
+    // ];
+    // var result = await ref.read(profileRepositoryProvider).uploadPhoto(
+    //       userId: Auth.instance!.user.id,
+    //       key: const Uuid().v4(),
+    //       filePath: croppedFile.path,
+    //     );
 
-    if (result == null) {
-      ref.read(imagesProvider.state).state = images;
-    } else {
-      var currentImages = ref.read(imagesProvider);
-      var updatedLast = OrderImage(
-        orderImageType: OrderImageType.API,
-        data: result,
-      );
+    // if (result == null) {
+    //   ref.read(imagesProvider.state).state = images;
+    // } else {
+    //   var currentImages = ref.read(imagesProvider);
+    //   var updatedLast = OrderImage(
+    //     orderImageType: OrderImageType.API,
+    //     data: result,
+    //   );
 
-      currentImages[currentImages.length - 1] = updatedLast;
-      ref.read(imagesProvider.state).state = currentImages;
-    }
+    //   currentImages[currentImages.length - 1] = updatedLast;
+    //   ref.read(imagesProvider.state).state = currentImages;
   }
 
   void onIndexChanged(int oldIndex, int newIndex) {
-    print('oldIndex : $oldIndex , newIndex: $newIndex');
-    var currentImages = ref.read(imagesProvider);
-    var imageList = [...currentImages];
+    // print('oldIndex : $oldIndex , newIndex: $newIndex');
+    // var currentImages = ref.read(imagesProvider);
+    // var imageList = [...currentImages];
 
-    final element = imageList.removeAt(oldIndex);
+    // final element = imageList.removeAt(oldIndex);
 
-    imageList.insert(newIndex, element);
+    // imageList.insert(newIndex, element);
 
-    ref.read(imagesProvider.state).state = imageList;
+    // ref.read(imagesProvider.state).state = imageList;
 
-    profileRepository.updateOrder(
-      userId: Auth.instance!.user.id,
-      index: newIndex,
-      key: currentImages[oldIndex].data.key,
-    );
+    // profileRepository.updateOrder(
+    //   userId: Auth.instance!.user.id,
+    //   index: newIndex,
+    //   key: currentImages[oldIndex].data.key,
+    // );
   }
 
   void onDeletePhoto(String photoId) async {
-    bool isSuccess = await profileRepository.deletePhoto(
-      userId: Auth.instance!.user.id,
-      photoId: photoId,
-    );
+    // bool isSuccess = await profileRepository.deletePhoto(
+    //   userId: Auth.instance!.user.id,
+    //   photoId: photoId,
+    // );
 
-    if (isSuccess) {
-      _initUserPhotos();
-    }
+    // if (isSuccess) {
+    //   _initUserPhotos();
+    // }
   }
 }

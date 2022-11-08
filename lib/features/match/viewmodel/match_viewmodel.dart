@@ -1,109 +1,76 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/base/view_model.dart';
-import 'package:frontend/enums/swipe_direction.dart';
+import 'package:flutter/material.dart';
+import 'package:frontend/features/match/model/match_user.dart';
+import 'package:frontend/features/match/repository/i_match_repository.dart';
+
 import 'package:frontend/model/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:swipe_cards/draggable_card.dart';
+import 'package:swipe_cards/swipe_cards.dart';
 
-import '../model/match_user.dart';
-import '../provider/repository_providers.dart';
+import '../../../enums/swipe_direction.dart';
 
-class MatchViewModel extends ViewModel {
-  MatchViewModel({required super.context, required super.ref});
-
-  @override
-  void init() {
-    _initCurrentMatchUser();
-    super.init();
+class MatchViewModel extends ChangeNotifier {
+  MatchViewModel(this.context) {
+    matchRepository = Provider.of<IMatchRepository>(context, listen: false);
+    _fillQueue();
   }
 
-  final consumedAllProvider = StateProvider<bool>((ref) => false);
+  final BuildContext context;
+  late final IMatchRepository matchRepository;
 
-  final queueProvider = StateProvider<List<MatchUser>>((ref) {
-    return <MatchUser>[];
-  });
+  List<SwipeItem> swipeItems = [];
+  MatchEngine matchEngine = MatchEngine(swipeItems: []);
 
-  void onSwipeLeft() => _swipe(SwipeDirection.LEFT);
+  SlideRegion? slideRegion;
 
-  void onSwipeRight() => _swipe(SwipeDirection.RIGHT);
+  void onSwipeLeft() => _swipe(Swipe.LEFT);
 
-  void _addItemsToQueue(Iterable<MatchUser> users) {
-    var queue = ref.read(queueProvider);
+  void onSwipeRight() => _swipe(Swipe.RIGHT);
 
-    ref.read(queueProvider.state).state = [...queue, ...users];
-  }
+  Future<void> _fillQueue() async {
+    var data = await matchRepository.getMatch(userId: Auth.id!, count: 3);
+    if (data != null) {
+      var newItems = data.map((e) => SwipeItem(
+            content: e,
+            likeAction: () => _swipe(Swipe.RIGHT),
+            nopeAction: () => _swipe(Swipe.LEFT),
+            onSlideUpdate: (slideRegion) async {
+              bool isCurrent = matchEngine.currentItem?.content == e;
+              if (this.slideRegion != slideRegion && isCurrent) {
+                this.slideRegion = slideRegion;
+                notifyListeners();
+              }
 
-  MatchUser? _popFirstFromQueue() {
-    var queue = ref.read(queueProvider);
-    if (queue.isEmpty) return null;
+              print(slideRegion);
+              return slideRegion;
+            },
+          ));
+      var freshList = [...newItems];
+      swipeItems = freshList;
+      matchEngine = MatchEngine(swipeItems: swipeItems);
 
-    var user = queue.removeAt(0);
-
-    ref.read(queueProvider.state).state = queue;
-    return user;
-  }
-
-  void _initCurrentMatchUser() {
-    if (Auth.isNull) {
-      return;
+      notifyListeners();
     }
-    ref
-        .read(matchRepositoryProvider)
-        .getMatch(
-          userId: Auth.instance!.user.id,
-          count: 2,
-        )
-        .then((value) {
-      if (value != null) {
-        if (value.isEmpty) {
-          ref.read(consumedAllProvider.state).state = true;
-        }
-
-        _addItemsToQueue(value);
-      }
-      // _updateCurrent();
-    });
   }
 
-  void _fillQueue() {
-    ref
-        .read(matchRepositoryProvider)
-        .getMatch(
-          userId: Auth.instance!.user.id,
-          count: 2,
-        )
-        .then((value) {
-      var queue = ref.read(queueProvider);
-      if (value != null) {
-        ref.read(queueProvider.state).state = [...queue, ...value];
-      }
-    });
-  }
-
-  void _swipe(SwipeDirection swipeDirection) {
+  void _swipe(Swipe swipeDirection) async {
     if (Auth.isNull) {
       return;
     }
 
-    MatchUser? targetUser = _popFirstFromQueue();
+    var user = matchEngine.currentItem?.content as MatchUser?;
 
-    if (targetUser == null) {
-      _fillQueue();
-      return;
-    }
-
-    ref
-        .read(matchRepositoryProvider)
-        .postMach(
-          userId: Auth.instance!.user.id,
-          targetUserId: targetUser.id!,
-          swipeDirection: swipeDirection,
-        )
-        .then(
-      (value) {
-        var queue = ref.read(queueProvider);
-        if (queue.length < 3) {
-          _fillQueue();
-        }
-      },
+    await matchRepository.postMach(
+      userId: Auth.id!,
+      targetUserId: user!.id!,
+      swipeDirection: swipeDirection,
     );
+
+    var nextUser = matchEngine.nextItem?.content as MatchUser?;
+    print('next ${nextUser?.firstName}');
+    if (nextUser == null) {
+      print('fetch new ones');
+      await _fillQueue();
+    }
   }
 }

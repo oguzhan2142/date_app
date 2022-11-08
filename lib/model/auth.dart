@@ -15,6 +15,7 @@ class Auth {
   });
 
   static bool get isNull => instance == null;
+  static String? get id => instance?.user.id;
 
   Map<String, dynamic> toJson() => _$AuthToJson(this);
 

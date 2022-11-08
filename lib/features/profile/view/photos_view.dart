@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants/double_consts.dart';
 import 'package:frontend/features/profile/viewmodel/photos_viewmodel.dart';
 import 'package:frontend/features/profile/widget/photo_list_item.dart';
+import 'package:provider/provider.dart';
 
-class PhotosView extends ConsumerStatefulWidget {
+class PhotosView extends StatefulWidget {
   const PhotosView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _PhotosViewState();
+  State<PhotosView> createState() => _PhotosViewState();
 }
 
-class _PhotosViewState extends ConsumerState<PhotosView> {
+class _PhotosViewState extends State<PhotosView> {
   late final PhotosViewModel viewModel;
 
   @override
   void initState() {
-    viewModel = PhotosViewModel(context: context, ref: ref);
+    viewModel = PhotosViewModel();
     super.initState();
   }
 
@@ -39,7 +39,8 @@ class _PhotosViewState extends ConsumerState<PhotosView> {
       appBar: AppBar(),
       body: Consumer(
         builder: (context, ref, child) {
-          var images = ref.watch(viewModel.imagesProvider);
+          // var images = ref.watch(viewModel.imagesProvider);
+          var images = [];
 
           return GridView.count(
             padding: const EdgeInsets.all(10),

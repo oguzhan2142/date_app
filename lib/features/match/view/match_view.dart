@@ -1,41 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:frontend/features/match/model/match_user.dart';
-import 'package:frontend/features/match/viewmodel/match_viewmodel.dart';
-import 'package:swipable_stack/swipable_stack.dart';
+import 'package:provider/provider.dart';
+import 'package:swipe_cards/swipe_cards.dart';
 
+import '../viewmodel/match_viewmodel.dart';
 import '../widget/clickable_image.dart';
-import 'bottom_buttons_row.dart';
-import 'card_overlay.dart';
-import 'example_card.dart';
 
-class MatchView extends ConsumerStatefulWidget {
+class MatchView extends StatefulWidget {
   const MatchView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MatchViewState();
+  State<MatchView> createState() => _MatchViewState();
 }
 
-class _MatchViewState extends ConsumerState<MatchView> {
+class _MatchViewState extends State<MatchView> {
   late final MatchViewModel viewModel;
-
-  late final SwipableStackController _controller;
-
-  void _listenController() => setState(() {});
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller
-      ..removeListener(_listenController)
-      ..dispose();
-  }
 
   @override
   void initState() {
-    viewModel = MatchViewModel(context: context, ref: ref);
-    _controller = SwipableStackController()..addListener(_listenController);
+    viewModel = MatchViewModel(context);
     super.initState();
   }
 
@@ -49,83 +32,74 @@ class _MatchViewState extends ConsumerState<MatchView> {
     // var match = ref.watch(viewModel.currentMatchProvider);
 
     // print(match?.firstName);
-    var queue = ref.watch(viewModel.queueProvider);
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        top: false,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: SwipableStack(
-                  detectableSwipeDirections: const {
-                    SwipeDirection.right,
-                    SwipeDirection.left,
-                  },
-                  controller: _controller,
-                  stackClipBehaviour: Clip.none,
-                  onSwipeCompleted: (index, direction) {
-                    if (direction == SwipeDirection.left) {
-                      viewModel.onSwipeRight();
-                    } else if (direction == SwipeDirection.right) {
-                      viewModel.onSwipeLeft();
-                    }
-                  },
-                  horizontalSwipeThreshold: 0.8,
-                  itemCount: queue.length,
-                  verticalSwipeThreshold: 0.8,
-                  builder: (context, properties) {
-                    if (queue.isEmpty) {
-                      return const Text('No user to match');
-                    }
+    // var queue = ref.watch(viewModel.queueProvider);
 
-                    final itemIndex = properties.index % queue.length;
-
-                    var matchUser = queue.elementAt(itemIndex);
-
-                    return Stack(
-                      children: [
-                        ExampleCard(
-                          name: matchUser.firstName ?? '',
-                          assetPath: matchUser.getFirstImage(),
-                        ),
-                        if (properties.stackIndex == 0 && properties.direction != null)
-                          CardOverlay(
-                            swipeProgress: properties.swipeProgress,
-                            direction: properties.direction!,
-                          )
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-            BottomButtonsRow(
-              onSwipe: (direction) {
-                _controller.next(swipeDirection: direction);
-              },
-              onRewindTap: _controller.rewind,
-              canRewind: _controller.canRewind,
-            ),
-          ],
+    return ChangeNotifierProvider<MatchViewModel>(
+      create: (context) => viewModel,
+      child: Scaffold(
+        appBar: AppBar(),
+        body: SafeArea(
+          top: false,
+          child: Consumer<MatchViewModel>(
+            builder: (context, value, child) {
+              var isNull = value.matchEngine.currentItem == null;
+              if (isNull) {
+                return const SizedBox();
+              }
+              return SwipeCards(
+                matchEngine: viewModel.matchEngine,
+                itemBuilder: (BuildContext context, int index) {
+                  bool isCurrent = viewModel.matchEngine.currentItem == viewModel.swipeItems[index];
+                  return ClickableImage(
+                    swipeItem: viewModel.swipeItems[index],
+                    slideRegion: isCurrent ? value.slideRegion : null,
+                  );
+                },
+                onStackFinished: () {},
+                itemChanged: (SwipeItem item, int index) {},
+                upSwipeAllowed: false,
+                fillSpace: true,
+              );
+            },
+          ),
         ),
       ),
     );
   }
-
-  List<ClickableImage> matchesToWidgets(List<MatchUser> matches) {
-    return matches
-        .map((e) => ClickableImage(
-              matchUser: e,
-              leftPressed: () {
-                //
-              },
-              rightPressed: () {
-                //
-              },
-            ))
-        .toList();
-  }
 }
+
+//  if (users.isEmpty) {
+//               return const SizedBox();
+//             }
+//             return SwipableStack(
+//               itemCount: users.length,
+//               onSwipeCompleted: (index, direction) {
+//                 // viewModel.onSwipeRight();
+//                 // print("queue size: ${queue.length}");
+//                 // print('$index, $direction');
+//               },
+//               controller: value.swipableStackController,
+//               builder: (context, swipeProperty) {
+//                 var index = value.swipableStackController.currentIndex % users.length;
+//                 print("stack index: $index");
+//                 var item = users[index];
+//                 return ExampleCard(
+//                   name: item.firstName ?? '',
+//                   assetPath: item.getFirstImage(),
+//                 );
+//               },
+//             );
+//   List<ClickableImage> matchesToWidgets(List<MatchUser> matches) {
+//     return matches
+//         .map((e) => ClickableImage(
+//               matchUser: e,
+//               leftPressed: () {
+//                 //
+//               },
+//               rightPressed: () {
+//                 //
+//               },
+//             ))
+//         .toList();
+//   }
+// }

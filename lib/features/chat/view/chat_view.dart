@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:frontend/enums/padding_type.dart';
-import 'package:frontend/features/chat/provider/chat_state_providers.dart';
 import 'package:frontend/features/chat/viewmodel/chat_viewmodel.dart';
-import 'package:frontend/features/chat/widget/chat_match_list_item.dart';
+import 'package:provider/provider.dart';
 
-import '../widget/room_list_item.dart';
-
-class ChatView extends ConsumerStatefulWidget {
+class ChatView extends StatefulWidget {
   const ChatView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ChatViewState();
+  State<ChatView> createState() => _ChatViewState();
 }
 
-class _ChatViewState extends ConsumerState<ChatView> {
+class _ChatViewState extends State<ChatView> {
   late final ChatViewModel viewModel;
 
   @override
   void initState() {
-    viewModel = ChatViewModel(context: context, ref: ref);
+    viewModel = ChatViewModel();
     super.initState();
   }
 
@@ -42,22 +39,23 @@ class _ChatViewState extends ConsumerState<ChatView> {
               height: 65,
               child: Consumer(
                 builder: (context, ref, child) {
-                  var matches = ref.watch(matchesProvider);
-                  return ListView.separated(
-                    itemCount: matches.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return ChatMatchListItem(
-                        chatMatch: matches[index],
-                        onTap: () => viewModel.navigateToChatDetail(
-                          matches[index].userId!,
-                        ),
-                      );
-                    },
-                    separatorBuilder: (_, index) => const SizedBox(
-                      width: 10,
-                    ),
-                  );
+                  return const SizedBox();
+                  // var matches = ref.watch(matchesProvider);
+                  // return ListView.separated(
+                  //   itemCount: matches.length,
+                  //   scrollDirection: Axis.horizontal,
+                  //   itemBuilder: (context, index) {
+                  //     return ChatMatchListItem(
+                  //       chatMatch: matches[index],
+                  //       onTap: () => viewModel.navigateToChatDetail(
+                  //         matches[index].userId!,
+                  //       ),
+                  //     );
+                  //   },
+                  //   separatorBuilder: (_, index) => const SizedBox(
+                  //     width: 10,
+                  //   ),
+                  // );
                 },
               ),
             ),
@@ -68,19 +66,20 @@ class _ChatViewState extends ConsumerState<ChatView> {
             ),
             Expanded(
               child: Consumer(
-                builder: (context, ref, child) {
-                  var rooms = ref.watch(roomsProvider);
-                  return ListView.builder(
-                    itemCount: rooms.length,
-                    itemBuilder: (context, index) {
-                      return RoomListItem(
-                        onTap: () => viewModel.navigateToChatDetail(
-                          rooms[index].contact!.id!,
-                        ),
-                        room: rooms[index],
-                      );
-                    },
-                  );
+                builder: (context, _, child) {
+                  return const SizedBox();
+                  // var rooms = ref.watch(roomsProvider);
+                  // return ListView.builder(
+                  //   itemCount: rooms.length,
+                  //   itemBuilder: (context, index) {
+                  //     return RoomListItem(
+                  //       onTap: () => viewModel.navigateToChatDetail(
+                  //         rooms[index].contact!.id!,
+                  //       ),
+                  //       room: rooms[index],
+                  //     );
+                  //   },
+                  // );
                 },
               ),
             ),

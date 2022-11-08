@@ -1,5 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/features/chat/provider/chat_repository_provider.dart';
 import 'package:frontend/model/user.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
@@ -14,16 +12,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 class ChatDetailViewModel extends ViewModel {
   final String otherUserId;
 
-  final messagesProvider = StateProvider<List<types.Message>>((ref) {
-    return [];
-  });
-  final lasPageProvider = StateProvider<bool>((ref) => false);
-
-  final isInitializedProvider = StateProvider<bool>((ref) => false);
-
   ChatDetailViewModel({
-    required super.context,
-    required super.ref,
     required this.otherUserId,
   });
 
@@ -34,15 +23,15 @@ class ChatDetailViewModel extends ViewModel {
 
   final _uuid = const Uuid();
 
-  int _page = 0;
-  bool _isFetching = false;
+  final int _page = 0;
+  final bool _isFetching = false;
   User? otherUser;
   String _generateRandomMessageId() => _uuid.v4();
   @override
   void init() async {
-    otherUser = await ref.read(chatRepositoryProvider).getUserById(
-          userId: otherUserId,
-        );
+    // otherUser = await ref.read(chatRepositoryProvider).getUserById(
+    //       userId: otherUserId,
+    //     );
 
     if (otherUser == null) {
       // Navigator.of(context).pop();
@@ -73,14 +62,14 @@ class ChatDetailViewModel extends ViewModel {
     socket.connect();
     await onEndReached();
 
-    ref.read(isInitializedProvider.state).state = true;
+    // ref.read(isInitializedProvider.state).state = true;
     super.init();
   }
 
   void _addMessage(types.Message message) {
-    var messages = ref.read(messagesProvider);
+    // var messages = ref.read(messagesProvider);
 
-    ref.read(messagesProvider.state).state = [message, ...messages];
+    // ref.read(messagesProvider.state).state = [message, ...messages];
   }
 
   void onSendPressed(types.PartialText message) {
@@ -101,34 +90,34 @@ class ChatDetailViewModel extends ViewModel {
   }
 
   Future<void> onEndReached() async {
-    if (_isFetching) {
-      return;
-    }
-    _page++;
-    _isFetching = true;
-    var fetchedMessages = await ref.read(chatRepositoryProvider).getMessages(
-          userId: Auth.instance!.user.id,
-          otherUserId: otherUserId,
-          page: _page,
-        );
-    if (fetchedMessages == null) {
-      return;
-    }
-    if (fetchedMessages.isEmpty) {
-      ref.read(lasPageProvider.state).state = true;
-      return;
-    }
-    var models = fetchedMessages
-        .map((e) => types.TextMessage(
-              id: e.id!,
-              author: e.userId == otherUserId ? otherUserModel : userModel,
-              text: e.content!,
-              createdAt: DateTime.tryParse(e.createdAt ?? '')?.millisecondsSinceEpoch,
-            ))
-        .toList();
-    var messages = ref.read(messagesProvider);
+    // if (_isFetching) {
+    //   return;
+    // }
+    // _page++;
+    // _isFetching = true;
+    // var fetchedMessages = await ref.read(chatRepositoryProvider).getMessages(
+    //       userId: Auth.instance!.user.id,
+    //       otherUserId: otherUserId,
+    //       page: _page,
+    //     );
+    // if (fetchedMessages == null) {
+    //   return;
+    // }
+    // if (fetchedMessages.isEmpty) {
+    //   ref.read(lasPageProvider.state).state = true;
+    //   return;
+    // }
+    // var models = fetchedMessages
+    //     .map((e) => types.TextMessage(
+    //           id: e.id!,
+    //           author: e.userId == otherUserId ? otherUserModel : userModel,
+    //           text: e.content!,
+    //           createdAt: DateTime.tryParse(e.createdAt ?? '')?.millisecondsSinceEpoch,
+    //         ))
+    //     .toList();
+    // var messages = ref.read(messagesProvider);
 
-    ref.read(messagesProvider.state).state = [...messages, ...models];
-    _isFetching = false;
+    // ref.read(messagesProvider.state).state = [...messages, ...models];
+    // _isFetching = false;
   }
 }

@@ -22,9 +22,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/user.png
   AssetGenImage get user => const AssetGenImage('assets/icons/user.png');
 
-  /// File path: assets/icons/user_placeholder.png
+  /// File path: assets/icons/user_placeholder.jpeg
   AssetGenImage get userPlaceholder =>
-      const AssetGenImage('assets/icons/user_placeholder.png');
+      const AssetGenImage('assets/icons/user_placeholder.jpeg');
 
   /// List of all assets
   List<AssetGenImage> get values => [conversation, fire, user, userPlaceholder];
@@ -33,11 +33,20 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/image_3.jpg
+  AssetGenImage get image3 => const AssetGenImage('assets/images/image_3.jpg');
+
+  /// File path: assets/images/image_4.jpg
+  AssetGenImage get image4 => const AssetGenImage('assets/images/image_4.jpg');
+
+  /// File path: assets/images/image_5.jpg
+  AssetGenImage get image5 => const AssetGenImage('assets/images/image_5.jpg');
+
   /// File path: assets/images/test.jpeg
   AssetGenImage get test => const AssetGenImage('assets/images/test.jpeg');
 
   /// List of all assets
-  List<AssetGenImage> get values => [test];
+  List<AssetGenImage> get values => [image3, image4, image5, test];
 }
 
 class Assets {

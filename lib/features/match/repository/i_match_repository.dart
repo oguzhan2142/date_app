@@ -10,6 +10,6 @@ abstract class IMatchRepository {
   Future<bool> postMach({
     required String userId,
     required String targetUserId,
-    required SwipeDirection swipeDirection,
+    required Swipe swipeDirection,
   });
 }

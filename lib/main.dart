@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/features/match/repository/i_match_repository.dart';
+
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';
+import 'package:frontend/manager/request_manager/request_manager.dart';
 import 'package:frontend/router/route_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/match/repository/match_repository.dart';
 import 'model/auth.dart';
 import 'router/routes.dart';
 
@@ -23,9 +27,16 @@ void main() async {
     RouteManager.instance.initialLocation = Routes.LOGIN;
   }
 
-  print(RouteManager.instance.initialLocation);
-
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      Provider<IMatchRepository>(
+        create: (context) => MatchRepository(
+          requestManager: RequestManager('http://localhost:3000'),
+        ),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,14 +44,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: RouteManager.instance.initialLocation,
-        routes: RouteManager.instance.routes,
-        // home: RouteManager.instance.getHome(),
-        title: 'Material App',
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: RouteManager.instance.initialLocation,
+      routes: RouteManager.instance.routes,
+      // home: RouteManager.instance.getHome(),
+      title: 'Material App',
     );
   }
 }

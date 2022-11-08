@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/features/authentication/provider/login_provider.dart';
 import 'package:frontend/features/authentication/viewmodel/login_viewmodel.dart';
 import 'package:frontend/router/routes.dart';
 
 import '../../../enums/padding_type.dart';
 
-class LoginView extends ConsumerStatefulWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends ConsumerState<LoginView> {
+class _LoginViewState extends State<LoginView> {
   late final LoginViewModel viewModel;
 
   @override
   void initState() {
-    viewModel = LoginViewModel(context: context, ref: ref);
+    viewModel = LoginViewModel();
     super.initState();
   }
 
@@ -53,15 +51,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
               },
               child: const Text('register'),
             ),
-            Consumer(
-              builder: (context, ref, child) {
-                final isLoading = ref.watch(loginBtnLoadingProvider);
-                return ElevatedButton(
-                  onPressed: isLoading ? null : viewModel.onLogin,
-                  child: const Text('login'),
-                );
-              },
-            )
+            // Consumer(
+            //   builder: (context, ref, child) {
+            //     final isLoading = ref.watch(loginBtnLoadingProvider);
+            //     return ElevatedButton(
+            //       onPressed: isLoading ? null : viewModel.onLogin,
+            //       child: const Text('login'),
+            //     );
+            //   },
+            // )
           ],
         ),
       ),

@@ -1,7 +1,7 @@
-enum SwipeDirection {
+enum Swipe {
   LEFT('left'),
   RIGHT('right');
 
-  const SwipeDirection(this.apiArg);
+  const Swipe(this.apiArg);
   final String apiArg;
 }

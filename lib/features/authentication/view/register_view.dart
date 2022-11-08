@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/enums/padding_type.dart';
-import 'package:frontend/features/authentication/provider/register_provider.dart';
 import 'package:frontend/features/authentication/viewmodel/register_viewmodel.dart';
+import 'package:provider/provider.dart';
 
-class RegisterView extends ConsumerStatefulWidget {
+class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RegisterViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegisterViewState extends ConsumerState<RegisterView> {
+class _RegisterViewState extends State<RegisterView> {
   late final RegisterViewModel viewModel;
 
   @override
   void initState() {
-    viewModel = RegisterViewModel(context: context, ref: ref);
+    viewModel = RegisterViewModel();
     super.initState();
   }
 
@@ -61,7 +60,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             Consumer(
               builder: (context, ref, child) {
                 print('register consumer rebuilded');
-                final isLoading = ref.watch(registerBtnLoadingProvider);
+                // final isLoading = ref.watch(registerBtnLoadingProvider);
+                bool isLoading = false;
                 return ElevatedButton(
                   onPressed: isLoading ? null : viewModel.onRegister,
                   child: const Text('register'),

@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:frontend/gen/assets.gen.dart';
 import 'package:frontend/model/auth.dart';
 
-class ProfileView extends ConsumerStatefulWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileViewState();
+  State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends ConsumerState<ProfileView> {
+class _ProfileViewState extends State<ProfileView> {
   late final ProfileViewModel viewModel;
 
   @override
   void initState() {
-    viewModel = ProfileViewModel(context: context, ref: ref);
+    viewModel = ProfileViewModel();
     super.initState();
   }
 

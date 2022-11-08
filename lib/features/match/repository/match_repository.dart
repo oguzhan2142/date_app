@@ -28,7 +28,7 @@ class MatchRepository extends BaseRepository implements IMatchRepository {
   Future<bool> postMach({
     required String userId,
     required String targetUserId,
-    required SwipeDirection swipeDirection,
+    required Swipe swipeDirection,
   }) {
     return requestManager.getResult(
       path: '/api/match/',
