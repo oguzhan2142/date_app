@@ -15,12 +15,18 @@ class $AssetsIconsGen {
   /// File path: assets/icons/chat.png
   AssetGenImage get chat => const AssetGenImage('assets/icons/chat.png');
 
+  /// File path: assets/icons/close.png
+  AssetGenImage get close => const AssetGenImage('assets/icons/close.png');
+
   /// File path: assets/icons/conversation.png
   AssetGenImage get conversation =>
       const AssetGenImage('assets/icons/conversation.png');
 
   /// File path: assets/icons/fire.png
   AssetGenImage get fire => const AssetGenImage('assets/icons/fire.png');
+
+  /// File path: assets/icons/heart.png
+  AssetGenImage get heart => const AssetGenImage('assets/icons/heart.png');
 
   /// File path: assets/icons/user.png
   AssetGenImage get user => const AssetGenImage('assets/icons/user.png');
@@ -34,7 +40,7 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [chat, conversation, fire, user, userPlaceholder, users];
+      [chat, close, conversation, fire, heart, user, userPlaceholder, users];
 }
 
 class $AssetsImagesGen {

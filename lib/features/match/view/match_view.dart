@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
+import '../../../gen/assets.gen.dart';
 import '../viewmodel/match_viewmodel.dart';
-import '../widget/clickable_image.dart';
+import '../widget/circle_button.dart';
+import '../widget/swipe_card.dart';
 
 class MatchView extends StatefulWidget {
   const MatchView({super.key});
@@ -20,6 +22,24 @@ class _MatchViewState extends State<MatchView> {
   void initState() {
     viewModel = MatchViewModel(context);
     super.initState();
+  }
+
+  Widget _buttons(SwipeItem? swipeItem) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        CircleButton(
+          onPressed: () => swipeItem?.nopeAction!(),
+          iconPath: Assets.icons.close.path,
+          iconColor: Colors.red,
+        ),
+        CircleButton(
+          onPressed: () => swipeItem?.likeAction!(),
+          iconPath: Assets.icons.heart.path,
+          iconColor: Colors.green,
+        ),
+      ],
+    );
   }
 
   @override
@@ -38,29 +58,42 @@ class _MatchViewState extends State<MatchView> {
       create: (context) => viewModel,
       child: Scaffold(
         appBar: AppBar(),
-        body: SafeArea(
-          top: false,
-          child: Consumer<MatchViewModel>(
-            builder: (context, value, child) {
-              var isNull = value.matchEngine.currentItem == null;
-              if (isNull) {
-                return const SizedBox();
-              }
-              return SwipeCards(
-                matchEngine: viewModel.matchEngine,
-                itemBuilder: (BuildContext context, int index) {
-                  bool isCurrent = viewModel.matchEngine.currentItem == viewModel.swipeItems[index];
-                  return ClickableImage(
-                    swipeItem: viewModel.swipeItems[index],
-                    slideRegion: isCurrent ? value.slideRegion : null,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 4,
+            vertical: 5,
+          ),
+          child: Stack(
+            children: [
+              Consumer<MatchViewModel>(
+                builder: (context, value, child) {
+                  var isNull = value.matchEngine.currentItem == null;
+                  if (isNull) {
+                    return const SizedBox();
+                  }
+                  return SwipeCards(
+                    matchEngine: viewModel.matchEngine,
+                    itemBuilder: (BuildContext context, int index) {
+                      bool isCurrent = viewModel.matchEngine.currentItem == viewModel.swipeItems[index];
+                      return SwipeCard(
+                        swipeItem: viewModel.swipeItems[index],
+                        slideRegion: isCurrent ? value.slideRegion : null,
+                      );
+                    },
+                    onStackFinished: () {},
+                    itemChanged: (SwipeItem item, int index) {},
+                    upSwipeAllowed: false,
+                    fillSpace: true,
                   );
                 },
-                onStackFinished: () {},
-                itemChanged: (SwipeItem item, int index) {},
-                upSwipeAllowed: false,
-                fillSpace: true,
-              );
-            },
+              ),
+              Positioned(
+                bottom: 10,
+                left: 0,
+                right: 0,
+                child: _buttons(viewModel.matchEngine.currentItem),
+              ),
+            ],
           ),
         ),
       ),

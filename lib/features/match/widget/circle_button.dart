@@ -1,39 +1,47 @@
 import 'package:flutter/material.dart';
 
-class CircleButton extends StatelessWidget {
+import '../../../manager/theme/colors.dart';
+
+class CircleButton extends StatefulWidget {
   final VoidCallback onPressed;
-  final IconData iconData;
+  final String iconPath;
   final Color iconColor;
 
   const CircleButton({
     Key? key,
     required this.onPressed,
-    required this.iconData,
+    required this.iconPath,
     required this.iconColor,
   }) : super(key: key);
 
   @override
+  State<CircleButton> createState() => _CircleButtonState();
+}
+
+class _CircleButtonState extends State<CircleButton> {
+  bool _focused = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 2,
-            spreadRadius: 2,
-          )
-        ],
-      ),
-      child: CircleAvatar(
-        radius: 28,
-        backgroundColor: Colors.white,
-        child: IconButton(
-          onPressed: onPressed,
-          icon: Icon(
-            iconData,
-            color: iconColor,
-            size: 30,
+    return Listener(
+      onPointerDown: (event) {
+        setState(() => _focused = true);
+      },
+      onPointerUp: (event) => setState(() => _focused = false),
+      child: Container(
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+        child: CircleAvatar(
+          radius: 28,
+          backgroundColor: _focused ? primary : Colors.white,
+          child: IconButton(
+            onPressed: widget.onPressed,
+            icon: Image.asset(
+              widget.iconPath,
+              color: _focused ? Colors.white : widget.iconColor,
+              width: 24,
+            ),
           ),
         ),
       ),

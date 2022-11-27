@@ -52,6 +52,7 @@ class _NavigationViewState extends State<NavigationView> {
     return Scaffold(
         body: SizedBox.expand(
           child: PageView(
+            physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             onPageChanged: (index) {
               setState(() => _selectedIndex = index);
