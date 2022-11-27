@@ -12,6 +12,9 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/chat.png
+  AssetGenImage get chat => const AssetGenImage('assets/icons/chat.png');
+
   /// File path: assets/icons/conversation.png
   AssetGenImage get conversation =>
       const AssetGenImage('assets/icons/conversation.png');
@@ -26,8 +29,12 @@ class $AssetsIconsGen {
   AssetGenImage get userPlaceholder =>
       const AssetGenImage('assets/icons/user_placeholder.jpeg');
 
+  /// File path: assets/icons/users.png
+  AssetGenImage get users => const AssetGenImage('assets/icons/users.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [conversation, fire, user, userPlaceholder];
+  List<AssetGenImage> get values =>
+      [chat, conversation, fire, user, userPlaceholder, users];
 }
 
 class $AssetsImagesGen {
