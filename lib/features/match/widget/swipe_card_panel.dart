@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
 import '../model/match_user.dart';
-import 'card_information.dart';
+
 import 'opacity_effect.dart';
 
 class SwipeCardPanel extends StatelessWidget {
@@ -34,9 +34,38 @@ class SwipeCardPanel extends StatelessWidget {
           Column(
             children: [
               const Spacer(),
-              CardInformation(
-                name: getUser()?.firstName ?? '',
-                km: getUser()?.getDistance() ?? '',
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.firstName ?? '',
+                      style: Theme.of(context).textTheme.titleMedium?.apply(
+                            color: Colors.white,
+                            fontSizeDelta: 8,
+                            fontWeightDelta: 2,
+                          ),
+                    ),
+                    const SizedBox(height: 3),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on_outlined,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          '${user.getDistance()} km uzakta',
+                          style: Theme.of(context).textTheme.titleSmall?.apply(
+                                color: Colors.white,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: bottomSpace),
             ],

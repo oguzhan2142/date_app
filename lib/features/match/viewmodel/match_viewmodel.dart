@@ -59,7 +59,7 @@ class MatchViewModel extends ChangeNotifier {
     }
 
     var user = matchEngine.currentItem?.content as MatchUser?;
-
+    print('${user?.firstName} $swipeDirection');
     await matchRepository.postMach(
       userId: Auth.id!,
       targetUserId: user!.id!,
@@ -67,9 +67,8 @@ class MatchViewModel extends ChangeNotifier {
     );
 
     var nextUser = matchEngine.nextItem?.content as MatchUser?;
-    print('next ${nextUser?.firstName}');
+
     if (nextUser == null) {
-      print('fetch new ones');
       await _fillQueue();
     }
   }

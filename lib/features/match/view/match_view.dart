@@ -24,21 +24,38 @@ class _MatchViewState extends State<MatchView> {
     super.initState();
   }
 
-  Widget _buttons(SwipeItem? swipeItem) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        CircleButton(
-          onPressed: () => swipeItem?.nopeAction!(),
-          iconPath: Assets.icons.close.path,
-          iconColor: Colors.red,
-        ),
-        CircleButton(
-          onPressed: () => swipeItem?.likeAction!(),
-          iconPath: Assets.icons.heart.path,
-          iconColor: Colors.green,
-        ),
-      ],
+  Widget _buttons(MatchViewModel viewModel) {
+    return Consumer(
+      builder: (context, value, child) {
+        SwipeItem? swipeItem = viewModel.matchEngine.currentItem;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CircleButton(
+              onPressed: () {
+                var currentItem = viewModel.matchEngine.currentItem;
+
+                swipeItem?.nopeAction!();
+
+                currentItem?.nope();
+              },
+              iconPath: Assets.icons.close.path,
+              iconColor: Colors.red,
+            ),
+            CircleButton(
+              onPressed: () {
+                var currentItem = viewModel.matchEngine.currentItem;
+
+                swipeItem?.likeAction!();
+
+                currentItem?.like();
+              },
+              iconPath: Assets.icons.heart.path,
+              iconColor: Colors.green,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -91,7 +108,7 @@ class _MatchViewState extends State<MatchView> {
                 bottom: 10,
                 left: 0,
                 right: 0,
-                child: _buttons(viewModel.matchEngine.currentItem),
+                child: _buttons(viewModel),
               ),
             ],
           ),

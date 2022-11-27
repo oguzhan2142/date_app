@@ -99,7 +99,7 @@ class _SwipeCardState extends State<SwipeCard> {
               alignment: Alignment.bottomCenter,
               child: SwipeCardPanel(
                 swipeItem: widget.swipeItem,
-                bottomSpace: 90,
+                bottomSpace: 80,
                 height: MediaQuery.of(context).size.height * 0.4,
               ),
             ),
