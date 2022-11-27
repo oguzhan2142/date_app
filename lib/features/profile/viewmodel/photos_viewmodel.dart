@@ -7,19 +7,14 @@ import 'package:image_picker/image_picker.dart';
 import '../repository/i_profile_repository.dart';
 
 class PhotosViewModel extends ViewModel {
-  PhotosViewModel();
-
   // final imagesProvider = StateProvider<List<OrderImage>>((ref) {
   //   return [];
   // });
 
   late final IProfileRepository profileRepository;
 
-  @override
-  void init() {
-    // profileRepository = ref.read(profileRepositoryProvider);
+  PhotosViewModel({required super.context}) {
     _initUserPhotos();
-    super.init();
   }
 
   void _initUserPhotos() {

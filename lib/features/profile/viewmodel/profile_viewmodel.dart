@@ -5,7 +5,7 @@ import '../../../manager/cache_manager/cache_tags.dart';
 import '../../../model/auth.dart';
 
 class ProfileViewModel extends ViewModel {
-  ProfileViewModel();
+  ProfileViewModel({required super.context});
 
   void signOut() {
     Auth.instance = null;

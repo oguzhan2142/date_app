@@ -16,7 +16,7 @@ class _PhotosViewState extends State<PhotosView> {
 
   @override
   void initState() {
-    viewModel = PhotosViewModel();
+    viewModel = PhotosViewModel(context: context);
     super.initState();
   }
 

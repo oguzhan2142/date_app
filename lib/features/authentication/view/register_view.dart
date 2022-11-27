@@ -15,7 +15,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void initState() {
-    viewModel = RegisterViewModel();
+    viewModel = RegisterViewModel(context: context);
     super.initState();
   }
 

@@ -1,41 +1,31 @@
 import 'package:frontend/base/view_model.dart';
+import 'package:frontend/features/chat/repository/i_chat_repository.dart';
+import 'package:frontend/interface/authenticated.dart';
+import 'package:provider/provider.dart';
 
-class ChatViewModel extends ViewModel {
-  ChatViewModel();
+import '../model/chat_match.dart';
+import '../model/room.dart';
 
-  @override
-  void init() {
+class ChatViewModel extends ViewModel with IAuthenticated {
+  late final IChatRepository chatRepository;
+
+  List<Room>? rooms;
+  List<ChatMatch>? chatMatches;
+
+  ChatViewModel({required super.context}) {
+    chatRepository = Provider.of<IChatRepository>(context, listen: false);
     _initMatches();
-
     _initRooms();
-
-    super.init();
   }
 
-  void _initRooms() {
-    // ref
-    //     .read(chatRepositoryProvider)
-    //     .getRooms(
-    //       userId: Auth.instance!.user.id,
-    //     )
-    //     .then((value) {
-    //   if (value != null) {
-    //     ref.read(roomsProvider.state).state = value;
-    //   }
-    // });
+  void _initRooms() async {
+    rooms = await chatRepository.getRooms(userId: id);
+    notifyListeners();
   }
 
-  void _initMatches() {
-    // ref
-    //     .read(chatRepositoryProvider)
-    //     .getMatches(
-    //       userId: Auth.instance!.user.id,
-    //     )
-    //     .then((value) {
-    //   if (value != null) {
-    //     ref.read(matchesProvider.state).state = value;
-    //   }
-    // });
+  void _initMatches() async {
+    chatMatches = await chatRepository.getMatches(userId: id);
+    notifyListeners();
   }
 
   void navigateToChatDetail(String otherUserId) {

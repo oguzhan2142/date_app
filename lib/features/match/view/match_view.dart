@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/manager/theme/colors.dart';
 
 import 'package:provider/provider.dart';
 import 'package:swipe_cards/swipe_cards.dart';
@@ -20,7 +21,7 @@ class _MatchViewState extends State<MatchView> {
 
   @override
   void initState() {
-    viewModel = MatchViewModel(context);
+    viewModel = MatchViewModel(context: context);
     super.initState();
   }
 
@@ -61,19 +62,10 @@ class _MatchViewState extends State<MatchView> {
 
   @override
   Widget build(BuildContext context) {
-    // var consumedAll = ref.watch(viewModel.consumedAllProvider);
-    // if (consumedAll) {
-    //   return const Center(child: Text('You consumed all people'));
-    // }
-
-    // var match = ref.watch(viewModel.currentMatchProvider);
-
-    // print(match?.firstName);
-    // var queue = ref.watch(viewModel.queueProvider);
-
     return ChangeNotifierProvider<MatchViewModel>(
       create: (context) => viewModel,
       child: Scaffold(
+        backgroundColor: scaffoldBackground,
         appBar: AppBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(

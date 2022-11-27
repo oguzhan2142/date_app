@@ -15,7 +15,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void initState() {
-    viewModel = ProfileViewModel();
+    viewModel = ProfileViewModel(context: context);
     super.initState();
   }
 

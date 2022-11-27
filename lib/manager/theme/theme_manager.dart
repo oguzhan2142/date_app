@@ -9,10 +9,8 @@ class ThemeManager {
   final lightTheme = ThemeData(
     primarySwatch: primarySwatch,
     primaryColor: primary,
-    scaffoldBackgroundColor: scaffoldBackground,
-    appBarTheme: const AppBarTheme(
-      color: Colors.white,
-    ),
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(color: Colors.white, elevation: 0),
     iconTheme: const IconThemeData(color: gray),
     textTheme: const TextTheme(),
   );

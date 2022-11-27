@@ -13,8 +13,11 @@ class ChatDetailViewModel extends ViewModel {
   final String otherUserId;
 
   ChatDetailViewModel({
+    required super.context,
     required this.otherUserId,
-  });
+  }) {
+    init();
+  }
 
   late final String url;
   late IO.Socket socket;
@@ -27,7 +30,7 @@ class ChatDetailViewModel extends ViewModel {
   final bool _isFetching = false;
   User? otherUser;
   String _generateRandomMessageId() => _uuid.v4();
-  @override
+
   void init() async {
     // otherUser = await ref.read(chatRepositoryProvider).getUserById(
     //       userId: otherUserId,
@@ -63,7 +66,6 @@ class ChatDetailViewModel extends ViewModel {
     await onEndReached();
 
     // ref.read(isInitializedProvider.state).state = true;
-    super.init();
   }
 
   void _addMessage(types.Message message) {

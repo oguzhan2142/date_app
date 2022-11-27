@@ -5,7 +5,7 @@ class LoginViewModel extends ViewModel {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  LoginViewModel();
+  LoginViewModel({required super.context});
 
   void onLogin() {
     // ref.read(loginBtnLoadingProvider.state).state = true;

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/features/chat/repository/chat_repository.dart';
+import 'package:frontend/features/chat/repository/i_chat_repository.dart';
 import 'package:frontend/features/match/repository/i_match_repository.dart';
 
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
@@ -32,6 +34,11 @@ void main() async {
     providers: [
       Provider<IMatchRepository>(
         create: (context) => MatchRepository(
+          requestManager: RequestManager('http://localhost:3000'),
+        ),
+      ),
+      Provider<IChatRepository>(
+        create: (context) => ChatRepository(
           requestManager: RequestManager('http://localhost:3000'),
         ),
       )

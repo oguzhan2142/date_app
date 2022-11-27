@@ -17,6 +17,7 @@ class _ChatDetailViewState extends State<ChatDetailView> {
   @override
   void initState() {
     viewModel = ChatDetailViewModel(
+      context: context,
       // otherUserId: widget.otherUserId,
       otherUserId: 'widget.otherUserId',
     );

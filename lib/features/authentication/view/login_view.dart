@@ -16,7 +16,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    viewModel = LoginViewModel();
+    viewModel = LoginViewModel(context: context);
     super.initState();
   }
 

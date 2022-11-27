@@ -7,7 +7,8 @@ class RegisterViewModel extends ViewModel {
   final mailController = TextEditingController();
   final firstNameController = TextEditingController();
   final passwordController = TextEditingController();
-  RegisterViewModel();
+
+  RegisterViewModel({required super.context});
 
   void onRegister() {
     // final authInput = AuthInput(

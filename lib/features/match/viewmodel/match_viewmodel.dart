@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:frontend/features/match/model/match_user.dart';
 import 'package:frontend/features/match/repository/i_match_repository.dart';
 
@@ -7,21 +6,21 @@ import 'package:provider/provider.dart';
 import 'package:swipe_cards/draggable_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
+import '../../../base/view_model.dart';
 import '../../../enums/swipe_direction.dart';
 
-class MatchViewModel extends ChangeNotifier {
-  MatchViewModel(this.context) {
-    matchRepository = Provider.of<IMatchRepository>(context, listen: false);
-    _fillQueue();
-  }
-
-  final BuildContext context;
+class MatchViewModel extends ViewModel {
   late final IMatchRepository matchRepository;
 
   List<SwipeItem> swipeItems = [];
   MatchEngine matchEngine = MatchEngine(swipeItems: []);
 
   SlideRegion? slideRegion;
+
+  MatchViewModel({required super.context}) {
+    matchRepository = Provider.of<IMatchRepository>(context, listen: false);
+    _fillQueue();
+  }
 
   void onSwipeLeft() => _swipe(Swipe.LEFT);
 
