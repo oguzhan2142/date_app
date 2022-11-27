@@ -35,7 +35,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_ui: ^1.6.5
-
   json_annotation: ^4.7.0
   json_serializable: ^6.5.1
   line_icons: ^2.0.0
@@ -48,7 +47,7 @@ dependencies:
   reorderable_grid_view: ^2.2.5
   provider: ^6.0.4
   swipe_cards: ^1.0.0
-
+  bottom_navy_bar: ^6.0.0
   uuid: ^3.0.6
 
 dev_dependencies:

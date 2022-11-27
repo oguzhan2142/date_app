@@ -4,6 +4,7 @@ import 'package:frontend/features/match/repository/i_match_repository.dart';
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';
 import 'package:frontend/manager/request_manager/request_manager.dart';
+import 'package:frontend/manager/theme/theme_manager.dart';
 import 'package:frontend/router/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: RouteManager.instance.initialLocation,
       routes: RouteManager.instance.routes,
+      theme: ThemeManager.instance.lightTheme,
       // home: RouteManager.instance.getHome(),
       title: 'Material App',
     );

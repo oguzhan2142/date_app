@@ -17,7 +17,7 @@ class CardInformation extends StatelessWidget {
         Text(
           name,
           style: Theme.of(context).textTheme.titleMedium?.apply(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeightDelta: 8,
               ),
         ),
