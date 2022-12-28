@@ -11,6 +11,8 @@ import 'package:frontend/router/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/authentication/repository/authentication_repository.dart';
+import 'features/authentication/repository/i_authentication_repository.dart';
 import 'features/match/repository/match_repository.dart';
 import 'model/auth.dart';
 import 'router/routes.dart';
@@ -39,6 +41,11 @@ void main() async {
       ),
       Provider<IChatRepository>(
         create: (context) => ChatRepository(
+          requestManager: RequestManager('http://localhost:3000'),
+        ),
+      ),
+      Provider<IAuthenticationRepository>(
+        create: (context) => AuthenticationRepository(
           requestManager: RequestManager('http://localhost:3000'),
         ),
       )

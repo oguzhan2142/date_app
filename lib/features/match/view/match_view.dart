@@ -30,7 +30,7 @@ class _MatchViewState extends State<MatchView> {
       builder: (context, value, child) {
         SwipeItem? swipeItem = viewModel.matchEngine.currentItem;
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleButton(
               onPressed: () {
@@ -43,6 +43,61 @@ class _MatchViewState extends State<MatchView> {
               iconPath: Assets.icons.close.path,
               iconColor: Colors.red,
             ),
+            const SizedBox(width: 20),
+            SizedBox(
+              width: 65,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.all(6),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      color: Colors.red,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          '-12',
+                          style: Theme.of(context).textTheme.bodyText1?.apply(color: Colors.red),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            SizedBox(
+              width: 65,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.all(6),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      color: Colors.blue,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          '100',
+                          style: Theme.of(context).textTheme.bodyText1?.apply(color: Colors.blue),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 20),
             CircleButton(
               onPressed: () {
                 var currentItem = viewModel.matchEngine.currentItem;
@@ -109,39 +164,3 @@ class _MatchViewState extends State<MatchView> {
     );
   }
 }
-
-//  if (users.isEmpty) {
-//               return const SizedBox();
-//             }
-//             return SwipableStack(
-//               itemCount: users.length,
-//               onSwipeCompleted: (index, direction) {
-//                 // viewModel.onSwipeRight();
-//                 // print("queue size: ${queue.length}");
-//                 // print('$index, $direction');
-//               },
-//               controller: value.swipableStackController,
-//               builder: (context, swipeProperty) {
-//                 var index = value.swipableStackController.currentIndex % users.length;
-//                 print("stack index: $index");
-//                 var item = users[index];
-//                 return ExampleCard(
-//                   name: item.firstName ?? '',
-//                   assetPath: item.getFirstImage(),
-//                 );
-//               },
-//             );
-//   List<ClickableImage> matchesToWidgets(List<MatchUser> matches) {
-//     return matches
-//         .map((e) => ClickableImage(
-//               matchUser: e,
-//               leftPressed: () {
-//                 //
-//               },
-//               rightPressed: () {
-//                 //
-//               },
-//             ))
-//         .toList();
-//   }
-// }

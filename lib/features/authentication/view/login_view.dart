@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/features/authentication/viewmodel/login_viewmodel.dart';
 import 'package:frontend/router/routes.dart';
+import 'package:provider/provider.dart';
 
 import '../../../enums/padding_type.dart';
 
@@ -51,15 +52,14 @@ class _LoginViewState extends State<LoginView> {
               },
               child: const Text('register'),
             ),
-            // Consumer(
-            //   builder: (context, ref, child) {
-            //     final isLoading = ref.watch(loginBtnLoadingProvider);
-            //     return ElevatedButton(
-            //       onPressed: isLoading ? null : viewModel.onLogin,
-            //       child: const Text('login'),
-            //     );
-            //   },
-            // )
+            Consumer(
+              builder: (context, ref, child) {
+                return ElevatedButton(
+                  onPressed: viewModel.onLogin,
+                  child: const Text('login'),
+                );
+              },
+            )
           ],
         ),
       ),

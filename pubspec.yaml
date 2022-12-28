@@ -30,27 +30,28 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_bottom_navigation_bar: ^1.1.0
+  bottom_navy_bar: ^6.0.0
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
   flutter:
     sdk: flutter
   flutter_chat_ui: ^1.6.5
+  flutter_svg: ^1.1.6
+  font_awesome_flutter: ^10.2.1
+  get_time_ago: ^1.1.6
+  iconsax: ^0.0.8
+  image_cropper: ^3.0.0
+  image_picker: ^0.8.6
   json_annotation: ^4.7.0
   json_serializable: ^6.5.1
   line_icons: ^2.0.0
-  image_picker: ^0.8.6
   pretty_dio_logger: ^1.1.1
-  shared_preferences: ^2.0.15
-  get_time_ago: ^1.1.6
-  image_cropper: ^3.0.0
-  socket_io_client: ^2.0.0
-  reorderable_grid_view: ^2.2.5
   provider: ^6.0.4
+  reorderable_grid_view: ^2.2.5
+  shared_preferences: ^2.0.15
+  socket_io_client: ^2.0.0
   swipe_cards: ^1.0.0
-  bottom_navy_bar: ^6.0.0
   uuid: ^3.0.6
-  iconsax: ^0.0.8
-  font_awesome_flutter: ^10.2.1
 
 dev_dependencies:
   build_runner: ^2.3.0
@@ -71,6 +72,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/svg/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -101,7 +103,7 @@ flutter_gen:
 
   # Optional
   integrations:
-    flutter_svg: false
+    flutter_svg: true
     flare_flutter: false
     rive: false
     lottie: true

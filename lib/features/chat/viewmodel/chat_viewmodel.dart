@@ -12,20 +12,31 @@ class ChatViewModel extends ViewModel with IAuthenticated {
   List<Room>? rooms;
   List<ChatMatch>? chatMatches;
 
+  bool isLoading = false;
+
+  void _setLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
+
   ChatViewModel({required super.context}) {
     chatRepository = Provider.of<IChatRepository>(context, listen: false);
-    _initMatches();
-    _initRooms();
+    _initData();
   }
 
-  void _initRooms() async {
+  void _initData() async {
+    _setLoading(true);
+    await _initRooms();
+    await _initMatches();
+    _setLoading(false);
+  }
+
+  Future<void> _initRooms() async {
     rooms = await chatRepository.getRooms(userId: id);
-    notifyListeners();
   }
 
-  void _initMatches() async {
+  Future<void> _initMatches() async {
     chatMatches = await chatRepository.getMatches(userId: id);
-    notifyListeners();
   }
 
   void navigateToChatDetail(String otherUserId) {
