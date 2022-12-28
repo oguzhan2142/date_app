@@ -33,6 +33,7 @@ class MatchViewModel extends ViewModel {
             content: e,
             likeAction: () => _swipe(Swipe.RIGHT),
             nopeAction: () => _swipe(Swipe.LEFT),
+            superlikeAction: () {},
             onSlideUpdate: (slideRegion) async {
               bool isCurrent = matchEngine.currentItem?.content == e;
               if (this.slideRegion != slideRegion && isCurrent) {
@@ -50,6 +51,22 @@ class MatchViewModel extends ViewModel {
 
       notifyListeners();
     }
+  }
+
+  void onLike() {
+    SwipeItem? swipeItem = matchEngine.currentItem;
+
+    swipeItem?.likeAction!();
+
+    swipeItem?.like();
+  }
+
+  void onNope() {
+    SwipeItem? swipeItem = matchEngine.currentItem;
+
+    swipeItem?.nopeAction!();
+
+    swipeItem?.nope();
   }
 
   void _swipe(Swipe swipeDirection) async {
