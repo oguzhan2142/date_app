@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
 import 'package:frontend/features/chat/viewmodel/chat_detail_view_model.dart';
+
 import 'package:provider/provider.dart';
 
+import '../../../gen/assets.gen.dart';
+
 class ChatDetailView extends StatefulWidget {
-  const ChatDetailView({super.key});
+  final int matchId;
+  final int receiverId;
+  const ChatDetailView({
+    super.key,
+    required this.matchId,
+    required this.receiverId,
+  });
 
   @override
   State<ChatDetailView> createState() => _ChatDetailViewState();
@@ -18,8 +27,8 @@ class _ChatDetailViewState extends State<ChatDetailView> {
   void initState() {
     viewModel = ChatDetailViewModel(
       context: context,
-      // otherUserId: widget.otherUserId,
-      otherUserId: 'widget.otherUserId',
+      matchId: widget.matchId,
+      receiverId: widget.receiverId,
     );
 
     super.initState();
@@ -33,36 +42,36 @@ class _ChatDetailViewState extends State<ChatDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Consumer(
-        builder: (context, ref, child) {
-          var messages = <Message>[];
-          var isLastPage = false;
-          var isInitialized = false;
-          // var messages = ref.watch(viewModel.messagesProvider);
-          // var isLastPage = ref.watch(viewModel.lasPageProvider);
-          // var isInitialized = ref.watch(viewModel.isInitializedProvider);
-
-          if (!isInitialized) {
-            return const SizedBox();
-          }
-          // return Chat(
-          //   showUserAvatars: true,
-          //   showUserNames: true,
-          //   avatarBuilder: (userId) {
-          //     return CircleAvatar(
-          //       backgroundImage: AssetImage(Assets.icons.userPlaceholder.path),
-          //     );
-          //   },
-          //   isLastPage: isLastPage,
-          //   messages: messages,
-          //   onEndReached: viewModel.onEndReached,
-          //   onSendPressed: viewModel.onSendPressed,
-          //   user: viewModel.userModel,
-          // );
-        },
-      ),
+    return ChangeNotifierProvider(
+      create: (context) => viewModel,
+      builder: (context, child) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: Consumer<ChatDetailViewModel>(
+            builder: (context, ref, child) {
+              if (viewModel.initializing) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+              return Chat(
+                showUserAvatars: true,
+                showUserNames: true,
+                avatarBuilder: (userId) {
+                  return CircleAvatar(
+                    backgroundImage: AssetImage(Assets.icons.userPlaceholder.path),
+                  );
+                },
+                isLastPage: viewModel.isLastPage,
+                messages: viewModel.messages,
+                onEndReached: viewModel.onEndReached,
+                onSendPressed: viewModel.onSendPressed,
+                user: viewModel.sender,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

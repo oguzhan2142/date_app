@@ -3,10 +3,10 @@ part 'message.g.dart';
 
 @JsonSerializable()
 class Message {
-  String? userId;
+  int? userId;
   String? content;
   String? createdAt;
-  String? id;
+  int? id;
 
   Message({
     this.userId,

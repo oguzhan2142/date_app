@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:frontend/enums/padding_type.dart';
+import 'package:frontend/features/chat/view/chat_detail_view.dart';
 import 'package:frontend/features/chat/viewmodel/chat_viewmodel.dart';
 import 'package:frontend/features/chat/widget/no_match.dart';
+import 'package:frontend/router/app_navigator.dart';
 import 'package:provider/provider.dart';
 
 import '../widget/room_list_item.dart';
@@ -81,9 +83,20 @@ class _ChatViewState extends State<ChatView> {
               return ListView.builder(
                 itemCount: rooms.length,
                 itemBuilder: (context, index) {
+                  var item = rooms[index];
                   return RoomListItem(
-                    onTap: () {},
-                    room: rooms[index],
+                    onTap: () {
+                      if (item.matchId != null) {
+                        AppNavigator.instance.push(
+                          context,
+                          ChatDetailView(
+                            matchId: item.matchId!,
+                            receiverId: item.userId!,
+                          ),
+                        );
+                      }
+                    },
+                    room: item,
                   );
                 },
               );
