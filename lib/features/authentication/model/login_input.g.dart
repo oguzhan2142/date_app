@@ -7,12 +7,12 @@ part of 'login_input.dart';
 // **************************************************************************
 
 LoginInput _$LoginInputFromJson(Map<String, dynamic> json) => LoginInput(
-      username: json['username'] as String,
+      mail: json['mail'] as String,
       password: json['password'] as String,
     );
 
 Map<String, dynamic> _$LoginInputToJson(LoginInput instance) =>
     <String, dynamic>{
-      'username': instance.username,
+      'mail': instance.mail,
       'password': instance.password,
     };

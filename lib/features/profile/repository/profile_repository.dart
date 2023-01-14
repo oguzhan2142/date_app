@@ -8,7 +8,7 @@ class ProfileRepository extends BaseRepository implements IProfileRepository {
   ProfileRepository({required super.requestManager});
 
   @override
-  Future<List<UserPhoto>?> getUserPhotos({required String userId}) {
+  Future<List<UserPhoto>?> getUserPhotos({required int userId}) {
     return requestManager.getList(
       path: '/api/photo/$userId',
       requestType: RequestType.GET,
@@ -18,7 +18,7 @@ class ProfileRepository extends BaseRepository implements IProfileRepository {
 
   @override
   Future<bool> updateOrder({
-    required String userId,
+    required int userId,
     required int index,
     required String key,
   }) {
@@ -35,7 +35,7 @@ class ProfileRepository extends BaseRepository implements IProfileRepository {
 
   @override
   Future<UserPhoto?> uploadPhoto({
-    required String userId,
+    required int userId,
     required String key,
     required String filePath,
   }) async {
@@ -57,7 +57,7 @@ class ProfileRepository extends BaseRepository implements IProfileRepository {
 
   @override
   Future<bool> deletePhoto({
-    required String userId,
+    required int userId,
     required String photoId,
   }) {
     return requestManager.getResult(

@@ -7,7 +7,7 @@ part of 'match_user.dart';
 // **************************************************************************
 
 MatchUser _$MatchUserFromJson(Map<String, dynamic> json) => MatchUser(
-      id: json['id'] as String?,
+      id: json['id'] as int?,
       username: json['username'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,

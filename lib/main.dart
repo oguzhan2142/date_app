@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/features/chat/repository/chat_repository.dart';
 import 'package:frontend/features/chat/repository/i_chat_repository.dart';
-import 'package:frontend/features/match/repository/i_match_repository.dart';
 
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';

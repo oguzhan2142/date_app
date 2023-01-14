@@ -12,7 +12,7 @@ class ChatRepository extends BaseRepository implements IChatRepository {
   ChatRepository({required super.requestManager});
 
   @override
-  Future<List<Room>?> getRooms({required String userId}) {
+  Future<List<Room>?> getRooms({required int userId}) {
     return requestManager.getList(
       path: '/api/chat',
       queryParameters: {'userId': userId},
@@ -22,7 +22,7 @@ class ChatRepository extends BaseRepository implements IChatRepository {
   }
 
   @override
-  Future<List<ChatMatch>?> getMatches({required String userId}) {
+  Future<List<ChatMatch>?> getMatches({required int userId}) {
     return requestManager.getList<ChatMatch>(
       queryParameters: {'userId': userId},
       path: '/api/match/matches',
@@ -33,7 +33,7 @@ class ChatRepository extends BaseRepository implements IChatRepository {
 
   @override
   Future<List<Message>?> getMessages({
-    required String userId,
+    required int userId,
     required String otherUserId,
     required int page,
   }) {
@@ -50,7 +50,7 @@ class ChatRepository extends BaseRepository implements IChatRepository {
   }
 
   @override
-  Future<User?> getUserById({required String userId}) {
+  Future<User?> getUserById({required int userId}) {
     return requestManager.getSingle(
       path: '/api/chat/user/$userId',
       requestType: RequestType.GET,

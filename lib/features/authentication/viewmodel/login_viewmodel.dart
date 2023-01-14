@@ -20,7 +20,7 @@ class LoginViewModel extends ViewModel {
 
   void onLogin() {
     final loginInput = LoginInput(
-      username: usernameController.text,
+      mail: usernameController.text,
       password: passwordController.text,
     );
 

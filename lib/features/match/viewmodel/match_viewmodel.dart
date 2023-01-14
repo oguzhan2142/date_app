@@ -1,5 +1,4 @@
 import 'package:frontend/features/match/model/match_user.dart';
-import 'package:frontend/features/match/repository/i_match_repository.dart';
 
 import 'package:frontend/model/auth.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +7,7 @@ import 'package:swipe_cards/swipe_cards.dart';
 
 import '../../../base/view_model.dart';
 import '../../../enums/swipe_direction.dart';
+import '../repository/match_repository.dart';
 
 class MatchViewModel extends ViewModel {
   late final IMatchRepository matchRepository;

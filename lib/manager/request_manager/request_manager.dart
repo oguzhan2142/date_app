@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/enums/request_type.dart';
 import 'package:frontend/manager/request_manager/interceptor/token_interceptor.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class RequestManager {
   late final Dio _dio;
   RequestManager(String baseUrl) {
     _dio = Dio(BaseOptions(baseUrl: baseUrl));
-    // _dio.interceptors.add(PrettyDioLogger(
-    //   requestBody: true,
-    //   requestHeader: true,
-    // ));
+    _dio.interceptors.add(PrettyDioLogger(
+      requestBody: true,
+      requestHeader: true,
+    ));
     _dio.interceptors.add(TokenInterceptor());
   }
   Future<List<T>?> getList<T>({

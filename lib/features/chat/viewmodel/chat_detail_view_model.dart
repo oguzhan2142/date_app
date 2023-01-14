@@ -44,9 +44,9 @@ class ChatDetailViewModel extends ViewModel {
     url = "$baseUrl?userId=${Auth.instance!.user.id}&otherUserId=$otherUserId";
     socket = IO.io(url, OptionBuilder().setTransports(['websocket']).build());
 
-    userModel = types.User(id: Auth.instance!.user.id);
+    userModel = types.User(id: Auth.instance!.user.id.toString());
     otherUserModel = types.User(
-      id: otherUser!.id,
+      id: otherUser!.id.toString(),
       firstName: otherUser!.firstName,
       lastName: otherUser!.lastName,
     );

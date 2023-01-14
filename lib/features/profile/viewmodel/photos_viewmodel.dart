@@ -18,11 +18,7 @@ class PhotosViewModel extends ViewModel {
   }
 
   void _initUserPhotos() {
-    profileRepository
-        .getUserPhotos(
-      userId: Auth.instance!.user.id,
-    )
-        .then((value) {
+    profileRepository.getUserPhotos(userId: Auth.instance!.user.id!).then((value) {
       // ref.read(imagesProvider.state).state = value
       //         ?.map((e) => OrderImage(
       //               orderImageType: OrderImageType.API,

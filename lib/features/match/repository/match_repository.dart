@@ -3,14 +3,24 @@ import 'package:frontend/enums/swipe_direction.dart';
 import 'package:frontend/features/match/model/match_user.dart';
 import 'package:frontend/base/base_repository.dart';
 
-import 'i_match_repository.dart';
+abstract class IMatchRepository {
+  Future<List<MatchUser>?> getMatch({
+    required int userId,
+    required int count,
+  });
+  Future<bool> postMach({
+    required int userId,
+    required int targetUserId,
+    required Swipe swipeDirection,
+  });
+}
 
 class MatchRepository extends BaseRepository implements IMatchRepository {
   MatchRepository({required super.requestManager});
 
   @override
   Future<List<MatchUser>?> getMatch({
-    required String userId,
+    required int userId,
     required int count,
   }) {
     return requestManager.getList(
@@ -26,8 +36,8 @@ class MatchRepository extends BaseRepository implements IMatchRepository {
 
   @override
   Future<bool> postMach({
-    required String userId,
-    required String targetUserId,
+    required int userId,
+    required int targetUserId,
     required Swipe swipeDirection,
   }) {
     return requestManager.getResult(

@@ -32,11 +32,11 @@ class ChatViewModel extends ViewModel with IAuthenticated {
   }
 
   Future<void> _initRooms() async {
-    rooms = await chatRepository.getRooms(userId: id);
+    rooms = await chatRepository.getRooms(userId: id!);
   }
 
   Future<void> _initMatches() async {
-    chatMatches = await chatRepository.getMatches(userId: id);
+    chatMatches = await chatRepository.getMatches(userId: id!);
   }
 
   void navigateToChatDetail(String otherUserId) {
