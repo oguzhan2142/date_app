@@ -1,21 +1,26 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'last_message.dart';
 part 'chat_match.g.dart';
 
 @JsonSerializable()
 class ChatMatch {
-  String? userId;
+  int? matchId;
+  int? userId;
   String? firstName;
   String? lastName;
   String? image;
+  LastMessage? lastMessage;
 
   ChatMatch({
+    this.matchId,
     this.userId,
     this.firstName,
     this.lastName,
     this.image,
+    this.lastMessage,
   });
 
-  Map<String, dynamic> toJson() => _$ChatMatchToJson(this);
-
   factory ChatMatch.fromJson(Map<String, dynamic> json) => _$ChatMatchFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChatMatchToJson(this);
 }

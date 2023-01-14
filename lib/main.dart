@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/features/chat/repository/chat_repository.dart';
-import 'package:frontend/features/chat/repository/i_chat_repository.dart';
 
 import 'package:frontend/manager/cache_manager/cache_manager.dart';
 import 'package:frontend/manager/cache_manager/cache_tags.dart';
@@ -38,7 +37,7 @@ void main() async {
           requestManager: RequestManager('http://localhost:3000'),
         ),
       ),
-      Provider<IChatRepository>(
+      Provider<ChatRepository>(
         create: (context) => ChatRepository(
           requestManager: RequestManager('http://localhost:3000'),
         ),
