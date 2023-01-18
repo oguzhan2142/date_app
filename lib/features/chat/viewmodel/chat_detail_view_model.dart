@@ -148,9 +148,9 @@ class ChatDetailViewModel extends ViewModel {
     var models = fetchedMessages
         .map((e) => types.TextMessage(
               id: e.id!.toString(),
-              author: e.userId == receiverId ? receiver : sender,
+              author: e.senderUserId == receiverId ? receiver : sender,
               text: e.content!,
-              createdAt: DateTime.tryParse(e.createdAt ?? '')?.millisecondsSinceEpoch,
+              createdAt: DateTime.tryParse(e.date ?? '')?.millisecondsSinceEpoch,
             ))
         .toList();
 

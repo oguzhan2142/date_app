@@ -24,7 +24,7 @@ class MatchRepository extends BaseRepository implements IMatchRepository {
     required int count,
   }) {
     return requestManager.getList(
-      path: '/api/match/',
+      path: '/api/match/nearby',
       requestType: RequestType.GET,
       queryParameters: {
         'userId': userId,

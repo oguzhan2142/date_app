@@ -84,6 +84,7 @@ class _ChatViewState extends State<ChatView> {
                 itemCount: rooms.length,
                 itemBuilder: (context, index) {
                   var item = rooms[index];
+
                   return RoomListItem(
                     onTap: () {
                       if (item.matchId != null) {

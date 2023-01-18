@@ -3,16 +3,20 @@ part 'message.g.dart';
 
 @JsonSerializable()
 class Message {
-  int? userId;
-  String? content;
-  String? createdAt;
   int? id;
+  int? matchId;
+  int? senderUserId;
+  int? receiveUserId;
+  String? content;
+  String? date;
 
   Message({
-    this.userId,
-    this.content,
-    this.createdAt,
     this.id,
+    this.matchId,
+    this.senderUserId,
+    this.receiveUserId,
+    this.content,
+    this.date,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
