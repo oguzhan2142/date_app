@@ -40,6 +40,7 @@ class MatchRepository extends BaseRepository implements IMatchRepository {
     required int targetUserId,
     required Swipe swipeDirection,
   }) {
+    print('match request => $userId => $targetUserId');
     return requestManager.getResult(
       path: '/api/match/',
       requestType: RequestType.POST,

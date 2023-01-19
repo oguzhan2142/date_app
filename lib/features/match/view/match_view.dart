@@ -68,8 +68,12 @@ class _MatchViewState extends State<MatchView> {
                 left: 0,
                 right: 0,
                 child: DecisionButtons(
-                  onLike: viewModel.onLike,
-                  onNope: viewModel.onNope,
+                  onLike: () {
+                    viewModel.matchEngine.currentItem?.like();
+                  },
+                  onNope: () {
+                    viewModel.matchEngine.currentItem?.nope();
+                  },
                 ),
               ),
             ],

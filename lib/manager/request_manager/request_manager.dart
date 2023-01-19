@@ -9,7 +9,7 @@ class RequestManager {
     _dio = Dio(BaseOptions(baseUrl: baseUrl));
     _dio.interceptors.add(PrettyDioLogger(
       requestBody: true,
-      requestHeader: true,
+      // requestHeader: true,
     ));
     _dio.interceptors.add(TokenInterceptor());
   }

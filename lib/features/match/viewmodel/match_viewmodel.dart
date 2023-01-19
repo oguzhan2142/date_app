@@ -15,6 +15,8 @@ class MatchViewModel extends ViewModel {
   List<SwipeItem> swipeItems = [];
   MatchEngine matchEngine = MatchEngine(swipeItems: []);
 
+  final _fetchCount = 5;
+
   SlideRegion? slideRegion;
 
   MatchViewModel({required super.context}) {
@@ -22,12 +24,8 @@ class MatchViewModel extends ViewModel {
     _fillQueue();
   }
 
-  void onSwipeLeft() => _swipe(Swipe.LEFT);
-
-  void onSwipeRight() => _swipe(Swipe.RIGHT);
-
   Future<void> _fillQueue() async {
-    var data = await matchRepository.getMatch(userId: Auth.id!, count: 3);
+    var data = await matchRepository.getMatch(userId: Auth.id!, count: _fetchCount);
     if (data != null) {
       var newItems = data.map((e) => SwipeItem(
             content: e,
@@ -57,16 +55,12 @@ class MatchViewModel extends ViewModel {
     SwipeItem? swipeItem = matchEngine.currentItem;
 
     swipeItem?.likeAction!();
-
-    swipeItem?.like();
   }
 
   void onNope() {
     SwipeItem? swipeItem = matchEngine.currentItem;
 
     swipeItem?.nopeAction!();
-
-    swipeItem?.nope();
   }
 
   void _swipe(Swipe swipeDirection) async {
@@ -85,7 +79,7 @@ class MatchViewModel extends ViewModel {
     var nextUser = matchEngine.nextItem?.content as MatchUser?;
 
     if (nextUser == null) {
-      await _fillQueue();
+      _fillQueue();
     }
   }
 }
